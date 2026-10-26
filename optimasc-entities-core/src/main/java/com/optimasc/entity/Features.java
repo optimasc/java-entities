@@ -142,7 +142,7 @@ public final class Features
    *  determined when the namespace is opened and does not change for
    *  the lifetime of the namespace.</p>
    */
-  public static final String CONTENT_WRITE = "contentWrite";  
+  public static final String CONTENT_WRITE = "content-write";  
 
   /** Indicates that entities in this namespace meaningfully carry
    *  attributes accessible through
