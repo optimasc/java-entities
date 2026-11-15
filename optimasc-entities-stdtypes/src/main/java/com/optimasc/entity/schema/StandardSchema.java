@@ -69,13 +69,73 @@ public final class StandardSchema
 
     // --- Type definitions (syntaxes) ------------------------------------
     schema.add(StandardTypes.BOOLEAN);
-    schema.add(StandardTypes.NCNAME);
     schema.add(StandardTypes.STRING);
     schema.add(StandardTypes.INTEGER);
     schema.add(StandardTypes.OBJECT_IDENTIFIER);
     schema.add(StandardTypes.OCTET_STRING);
     schema.add(StandardTypes.JAVA_CLASS);
     schema.add(StandardTypes.GENERALIZEDTIME);
+    schema.add(StandardTypes.IA5STRING);
+    schema.add(StandardTypes.PRINTABLESTRING);
+    schema.add(StandardTypes.DATE);
+    schema.add(StandardTypes.DATETIME);
+    schema.add(StandardTypes.DURATION);
+    schema.add(StandardTypes.FLOAT32);
+    schema.add(StandardTypes.FLOAT64);
+    schema.add(StandardTypes.INT8);
+    schema.add(StandardTypes.INT16);
+    schema.add(StandardTypes.INT32);
+    schema.add(StandardTypes.INT64);
+    schema.add(StandardTypes.LANGUAGE);
+    schema.add(StandardTypes.MEDIA_TYPE);
+    schema.add(StandardTypes.NCNAME);
+    schema.add(StandardTypes.NORMALIZED_STRING);
+    schema.add(StandardTypes.OPENDATE);
+    schema.add(StandardTypes.PERCENTAGE);
+    schema.add(StandardTypes.QUALIFIED_NAME);
+    schema.add(StandardTypes.REAL);
+    schema.add(StandardTypes.TEXT);
+    schema.add(StandardTypes.TOKEN);
+    schema.add(StandardTypes.TIME_OF_DAY);
+    schema.add(StandardTypes.TIME_OF_DAY_TZ);
+    schema.add(StandardTypes.UINT8);
+    schema.add(StandardTypes.UINT16);
+    schema.add(StandardTypes.UINT32);
+    schema.add(StandardTypes.UINT64);
+    schema.add(StandardTypes.URI);
+    schema.add(StandardTypes.VISIBLE_STRING);
+
+    // --- XMLSchema 1.1 type definitions ---------------------------------
+/*    schema.add(StandardTypes.XSD_BOOLEAN);
+    schema.add(StandardTypes.XSD_BASE64BINARY);
+    schema.add(StandardTypes.XSD_HEXBINARY);
+    schema.add(StandardTypes.XSD_LANGUAGE);
+    schema.add(StandardTypes.XSD_TIMESTAMP);
+    schema.add(StandardTypes.XSD_DATE);
+    schema.add(StandardTypes.XSD_YEAR);
+    schema.add(StandardTypes.XSD_DECIMAL);
+    schema.add(StandardTypes.XSD_INTEGER);
+    schema.add(StandardTypes.XSD_INT8);
+    schema.add(StandardTypes.XSD_INT16);
+    schema.add(StandardTypes.XSD_INT);
+    schema.add(StandardTypes.XSD_LONG);
+    schema.add(StandardTypes.XSD_UINT8);
+    schema.add(StandardTypes.XSD_UINT16);
+    schema.add(StandardTypes.XSD_UINT32);
+    schema.add(StandardTypes.XSD_NON_NEGATIVE_INTEGER);
+    schema.add(StandardTypes.XSD_FLOAT);
+    schema.add(StandardTypes.XSD_DOUBLE);
+    schema.add(StandardTypes.XSD_STRING);
+    schema.add(StandardTypes.XSD_NORMALIZED_STRING);
+    schema.add(StandardTypes.XSD_TOKEN);
+    schema.add(StandardTypes.XSD_UINT64);
+    schema.add(StandardTypes.XSD_ANYURI);
+    schema.add(StandardTypes.XSD_DATETIME);
+    schema.add(StandardTypes.XSD_TIME);
+    schema.add(StandardTypes.XSD_DURATION);
+    schema.add(StandardTypes.XSD_NAME);
+    schema.add(StandardTypes.XSD_NCNAME);
+    schema.add(StandardTypes.XSD_NMTOKEN);*/
 
     // --- Attribute (item) definitions -----------------------------------
     schema.add(StandardAttributes.ATTRIBUTE_NAME);
