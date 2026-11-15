@@ -1,5 +1,7 @@
 package com.optimasc.entity.schema;
 
+import java.text.Format;
+
 import com.optimasc.datatypes.Datatype;
 import com.optimasc.schema.Definition;
 import com.optimasc.schema.TypeDefinition;
@@ -62,6 +64,14 @@ public interface EntityTypeDefinition extends TypeDefinition
    *  code.</p>
    */
   String KEY_DATATYPE = "DATATYPE";
+  
+  /** Attribute key under which the {@link java.text.Format} payload is stored.
+  *
+  *  <p>Exposed as a constant so that generic attribute-bag consumers
+  *  can retrieve the format without going through
+  *  {@link #getFormat()}.</p>
+  */
+  String KEY_FORMAT = "FORMAT";
 
   /** Returns the {@link Datatype} that defines the value space of
    *  this type.
@@ -79,4 +89,12 @@ public interface EntityTypeDefinition extends TypeDefinition
    *         instance.
    */
   Datatype getDatatype();
+  
+  
+  /** Returns the the formatter used to convert the type 
+   *  representation to and from strings.
+   *  
+   */
+  Format getFormat();
+  
 }
