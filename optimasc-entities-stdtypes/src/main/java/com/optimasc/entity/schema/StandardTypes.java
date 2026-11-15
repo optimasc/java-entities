@@ -339,7 +339,7 @@ public class StandardTypes
    * UnboundedDirectoryString in X.520
    */
   public static final String OID_STRING = "1.3.6.1.4.1.1466.115.121.1.15";
-  public static final String NAME_STRING = "UnboundedDirectoryString";
+  public static final String NAME_STRING = "DirectoryString";
   /**
    * Type definition for generic string type. This is a generic type
    * representing any unicode string. This is represented by a
@@ -348,7 +348,7 @@ public class StandardTypes
   public static final EntityTypeDefinition STRING =
   /* OID, NamespaceURI, name, Description, datatype */
   new DefaultTypeDefinition(OID_STRING, null,
-          NAME_STRING, "UnboundedDirectoryString", new StringType(new UnnamedTypeReference(new UnicodeCharType())), StandardFormatters.StringConverter.getInstance());
+          NAME_STRING, "Directory String", new StringType(new UnnamedTypeReference(new UnicodeCharType())), StandardFormatters.StringConverter.getInstance());
   
   /** Object Identifier for syntax of INTEGER */
   public static final String OID_INTEGER = "1.3.6.1.4.1.1466.115.121.1.27";
@@ -362,11 +362,11 @@ public class StandardTypes
   public static final EntityTypeDefinition INTEGER =
   /* OID, NamespaceURI, name, Description, datatype */
   new DefaultTypeDefinition(
-  OID_INTEGER, null, NAME_INTEGER, "INTEGER", new IntegralType(),NumericFormatters.IntegerCanonicalConverter.getLDAPInstance());
+  OID_INTEGER, null, NAME_INTEGER, "INTEGER", new IntegralType(),NumericFormatters.IntegerCanonicalConverter.getInstance());
 
   /** Object Identifier for syntax of an OBJECT IDENTIFIER */
   public static final String OID_OBJECT_IDENTIFIER = "1.3.6.1.4.1.1466.115.121.1.38";
-  public static final String NAME_OBJECT_IDENTIFIER = "objectIdentifier";
+  public static final String NAME_OBJECT_IDENTIFIER = "OBJECT IDENTIFIER";
   
   /** Type definition for OBJECT IDENTIFIER type. */
   public static final EntityTypeDefinition OBJECT_IDENTIFIER =
@@ -376,7 +376,7 @@ public class StandardTypes
 
   /** Object Identifier for syntax of an array of bytes / OCTET STRING */
   public static final String OID_OCTET_STRING = "1.3.6.1.4.1.1466.115.121.1.40";
-  public static final String NAME_BINARY = "binary";
+  public static final String NAME_BINARY = "OCTET STRING";
   /**
    * Type definition for an OCTET STRING type. This is a generic type
    * representing binary data. This is represented by a <code>byte[]</code>
@@ -439,7 +439,7 @@ public class StandardTypes
     new DefaultTypeDefinition(OID_PRINTABLESTRING, null,
           NAME_PRINTABLESTRING, "Printable String", new StringType(new UnnamedTypeReference(new VisibleCharType())), StandardFormatters.PrintableStringConverter.getInstance());
 
-  /*---------------- IETF draft-codere-ldapsyntax syntaxes ----------------*/
+  /*---------------- Base ASN.1 IETF draft-codere-ldapsyntax syntaxes ----------------*/
   
   /** Object Identifier for syntax of a Date */
   public static final String OID_DATE = "1.3.6.1.4.1.61799.5.40.31";
@@ -479,175 +479,17 @@ public class StandardTypes
     new DefaultTypeDefinition(OID_DURATION, null,
           NAME_DURATION, "Duration", new CalendarDurationType(), CalendarDurationConverter.getInstance());
   
-  
-  /** Object Identifier for syntax of a Float32 */
-  public static final String OID_FLOAT32 = "1.3.6.1.4.1.61799.5.40.9.4";
-  public static final String NAME_FLOAT32 = "Float32";
+  /** Object Identifier for syntax of a Visible String */
+  public static final String OID_VISIBLE_STRING = "1.3.6.1.4.1.61799.5.40.26";
+  public static final String NAME_VISIBLE_STRING = "VisibleString";
   /**
-   * Type definition for LDAP Float32 syntax, an IEEE 754 single precision floating point value. A Float32 type is represented by a
-   * <code>java.lang.Float</code> java object.
-   */
-  public static final EntityTypeDefinition FLOAT32 =
-  /* OID, NamespaceURI, name, Description, datatype */
-    new DefaultTypeDefinition(OID_FLOAT32, null,
-          NAME_FLOAT32, "Float32", new SingleType(), NumericFormatters.Float32Converter.getInstance());
-  
-  
-  /** Object Identifier for syntax of a Float64 */
-  public static final String OID_FLOAT64 = "1.3.6.1.4.1.61799.5.40.9.8";
-  public static final String NAME_FLOAT64 = "Float64";
-  /**
-   * Type definition for LDAP Float64 syntax, an IEEE 754 double precision floating point value. A Float64 type is represented by a
-   * <code>java.lang.Double</code> java object.
-   */
-  public static final EntityTypeDefinition FLOAT64 =
-  /* OID, NamespaceURI, name, Description, datatype */
-    new DefaultTypeDefinition(OID_FLOAT64, null,
-          NAME_FLOAT64, "Float64", new DoubleType(), NumericFormatters.Float64Converter.getInstance());
-  
-  
-  /** Object Identifier for syntax of a Int8 */
-  public static final String OID_INT8 = "1.3.6.1.4.1.61799.5.40.2.1";
-  public static final String NAME_INT8 = "Int8";
-  /**
-   * Type definition for LDAP Int8 syntax, a signed integer within the range -128 to 127. A Int8 type is represented by a
-   * <code>java.lang.Integer</code> java object.
-   */
-  public static final EntityTypeDefinition INT8 =
-  /* OID, NamespaceURI, name, Description, datatype */
-    new DefaultTypeDefinition(OID_INT8, null,
-          NAME_INT8, "Int8", new ByteType(), NumericFormatters.ByteConverter.getInstance());
-  
-  
-  /** Object Identifier for syntax of a Int16 */
-  public static final String OID_INT16 = "1.3.6.1.4.1.61799.5.40.2.2";
-  public static final String NAME_INT16 = "Int16";
-  /**
-   * Type definition for LDAP Int16 syntax, a signed integer within the range -32768 to 32767. A Int16 type is represented by a
-   * <code>java.lang.Integer</code> java object.
-   */
-  public static final EntityTypeDefinition INT16 =
-  /* OID, NamespaceURI, name, Description, datatype */
-    new DefaultTypeDefinition(OID_INT16, null,
-          NAME_INT16, "Int16", new ShortType(), NumericFormatters.ShortConverter.getInstance());
-  
-  
-  /** Object Identifier for syntax of a Int32 */
-  public static final String OID_INT32 = "1.3.6.1.4.1.61799.5.40.2.4";
-  public static final String NAME_INT32 = "Int32";
-  /**
-   * Type definition for LDAP Int32 syntax, a signed integer within the range -2147483648 to 2147483647. A Int32 type is represented by a
-   * <code>java.lang.Integer</code> java object.
-   */
-  public static final EntityTypeDefinition INT32 =
-  /* OID, NamespaceURI, name, Description, datatype */
-    new DefaultTypeDefinition(OID_INT32, null,
-          NAME_INT32, "Int32", new IntType(), NumericFormatters.IntConverter.getInstance());
-  
-  
-  /** Object Identifier for syntax of a Int64 */
-  public static final String OID_INT64 = "1.3.6.1.4.1.61799.5.40.2.8";
-  public static final String NAME_INT64 = "Int64";
-  /**
-   * Type definition for LDAP Int64 syntax, a signed integer within the range -9223372036854775808 to 9223372036854775807. A Int64 type is represented by a
-   * <code>java.lang.Long</code> java object.
-   */
-  public static final EntityTypeDefinition INT64 =
-  /* OID, NamespaceURI, name, Description, datatype */
-    new DefaultTypeDefinition(OID_INT64, null,
-          NAME_INT64, "Int64", new LongType(), NumericFormatters.LongConverter.getInstance());
-  
-  
-  /** Object Identifier for syntax of a Language */
-  public static final String OID_LANGUAGE = "1.3.6.1.4.1.61799.5.40.19.1";
-  public static final String NAME_LANGUAGE = "Language";
-  /**
-   * Type definition for LDAP Language syntax, a language tag as defined by IETF BCP 47. A Language type is represented by a
-   * <code>java.util.Locale</code> java object.
-   */
-  public static final EntityTypeDefinition LANGUAGE =
-  /* OID, NamespaceURI, name, Description, datatype */
-    new DefaultTypeDefinition(OID_LANGUAGE, null,
-          NAME_LANGUAGE, "Language", new LanguageType(), StandardFormatters.LocaleTypeConverter.getInstance());
-  
-  
-  /** Object Identifier for syntax of a Media Type */
-  public static final String OID_MEDIA_TYPE = "1.3.6.1.4.1.61799.5.40.26.5";
-  public static final String NAME_MEDIA_TYPE = "MediaType";
-  /**
-   * Type definition for LDAP Media Type syntax, an Internet media type as defined by IETF RFC 6838. A Media Type type is represented by a
-   * <code>com.optimasc.lang.MediaType</code> java object.
-   */
-  public static final EntityTypeDefinition MEDIA_TYPE =
-  /* OID, NamespaceURI, name, Description, datatype */
-    new DefaultTypeDefinition(OID_MEDIA_TYPE, null,
-          NAME_MEDIA_TYPE, "Media Type", new MediaTypeType(), StandardFormatters.MediaTypeConverter.getInstance());
-  
-  
-  /** Object Identifier for syntax of a NCName */
-  public static final String OID_NCNAME = "1.3.6.1.4.1.61799.5.40.12.6";
-  public static final String NAME_NCNAME = "NCName";
-  /**
-   * Type definition for LDAP NCName syntax, an identifier that is a subset of the XML NCName. A NCName type is represented by a
+   * Type definition for LDAP Visible String syntax, a string of printable ASCII characters (U+0020 to U+007E). A Visible String type is represented by a
    * <code>java.lang.String</code> java object.
    */
-  public static final EntityTypeDefinition NCNAME =
+  public static final EntityTypeDefinition VISIBLE_STRING =
   /* OID, NamespaceURI, name, Description, datatype */
-    new DefaultTypeDefinition(OID_NCNAME, null,
-          NAME_NCNAME, "NCName", new StringType(new UnnamedTypeReference(new UnicodeCharType())), StandardFormatters.NCNameConverter.getInstance());
-  
-  
-  /** Object Identifier for syntax of a Normalized String */
-  public static final String OID_NORMALIZED_STRING = "1.3.6.1.4.1.61799.5.40.12.4";
-  public static final String NAME_NORMALIZED_STRING = "NormalizedString";
-  /**
-   * Type definition for LDAP Normalized String syntax, a whitespace-normalized Unicode string. A Normalized String type is represented by a
-   * <code>java.lang.String</code> java object.
-   */
-  public static final EntityTypeDefinition NORMALIZED_STRING =
-  /* OID, NamespaceURI, name, Description, datatype */
-    new DefaultTypeDefinition(OID_NORMALIZED_STRING, null,
-          NAME_NORMALIZED_STRING, "Normalized String", new StringType(new UnnamedTypeReference(new UnicodeCharType())), StandardFormatters.NormalizedStringConverter.getInstance());
-  
-  
-  /** Object Identifier for syntax of a OpenDate */
-  public static final String OID_OPENDATE = "1.3.6.1.4.1.61799.5.40.14.1";
-  public static final String NAME_OPENDATE = "OpenDate";
-  /**
-   * Type definition for LDAP OpenDate syntax, a date with year, month or day precision, or a date and time with timezone, with a year from 1582 to 9999. A OpenDate type is represented by a
-   * <code>com.optimasc.lang.GregorianDatetimeCalendar</code> java object.
-   */
-  public static final EntityTypeDefinition OPENDATE =
-  /* OID, NamespaceURI, name, Description, datatype */
-    new DefaultTypeDefinition(OID_OPENDATE, null,
-          NAME_OPENDATE, "OpenDate", new DateTimeType(DateTime.TimeAccuracy.MILLISECOND, false), StandardDateFormatters.OpenDateConverter.getInstance());
-  
-  
-  /** Object Identifier for syntax of a Percentage */
-  public static final String OID_PERCENTAGE = "1.3.6.1.4.1.61799.5.40.2.20";
-  public static final String NAME_PERCENTAGE = "Percentage";
-  /**
-   * Type definition for LDAP Percentage syntax, an integer within the range 0 to 100. A Percentage type is represented by a
-   * <code>java.lang.Integer</code> java object.
-   */
-  public static final EntityTypeDefinition PERCENTAGE =
-  /* OID, NamespaceURI, name, Description, datatype */
-    new DefaultTypeDefinition(OID_PERCENTAGE, null,
-          NAME_PERCENTAGE, "Percentage", new PercentageType(), NumericFormatters.PercentageConverter.getInstance());
-  
-  
-  /** Object Identifier for syntax of a QualifiedName */
-  public static final String OID_QUALIFIED_NAME = "1.3.6.1.4.1.61799.5.40.12.7";
-  public static final String NAME_QUALIFIED_NAME = "QualifiedName";
-  /**
-   * Type definition for LDAP QualifiedName syntax, an identifier using namespaces, that is a subset of the XML QName. A QualifiedName type is represented by a
-   * <code>java.lang.String</code> java object.
-   */
-  public static final EntityTypeDefinition QUALIFIED_NAME =
-  /* OID, NamespaceURI, name, Description, datatype */
-    new DefaultTypeDefinition(OID_QUALIFIED_NAME, null,
-          NAME_QUALIFIED_NAME, "QualifiedName", new StringType(new UnnamedTypeReference(new UnicodeCharType())), StandardFormatters.QualifiedNameConverter.getInstance());
-  
+    new DefaultTypeDefinition(OID_VISIBLE_STRING, null,
+          NAME_VISIBLE_STRING, "Visible String", new StringType(new UnnamedTypeReference(new VisibleCharType())), StandardFormatters.VisibleStringConverter.getInstance());
   
   /** Object Identifier for syntax of a Real */
   public static final String OID_REAL = "1.3.6.1.4.1.61799.5.40.9";
@@ -662,32 +504,6 @@ public class StandardTypes
           NAME_REAL, "Real", new DoubleType(), NumericFormatters.RealConverter.getInstance());
   
   
-  /** Object Identifier for syntax of a Text */
-  public static final String OID_TEXT = "1.3.6.1.4.1.61799.5.40.12.3";
-  public static final String NAME_TEXT = "Text";
-  /**
-   * Type definition for LDAP Text syntax, a Unicode string with a restricted character repertoire. A Text type is represented by a
-   * <code>java.lang.String</code> java object.
-   */
-  public static final EntityTypeDefinition TEXT =
-  /* OID, NamespaceURI, name, Description, datatype */
-    new DefaultTypeDefinition(OID_TEXT, null,
-          NAME_TEXT, "Text", new StringType(new UnnamedTypeReference(new UnicodeCharType())), StandardFormatters.TextConverter.getInstance());
-  
-  
-  /** Object Identifier for syntax of a Token */
-  public static final String OID_TOKEN = "1.3.6.1.4.1.61799.5.40.12.5";
-  public static final String NAME_TOKEN = "Token";
-  /**
-   * Type definition for LDAP Token syntax, a whitespace-normalized Unicode string with no leading, trailing or consecutive spaces. A Token type is represented by a
-   * <code>java.lang.String</code> java object.
-   */
-  public static final EntityTypeDefinition TOKEN =
-  /* OID, NamespaceURI, name, Description, datatype */
-    new DefaultTypeDefinition(OID_TOKEN, null,
-          NAME_TOKEN, "Token", new StringType(new UnnamedTypeReference(new UnicodeCharType())), StandardFormatters.TokenConverter.getInstance());
-  
-  
   /** Object Identifier for syntax of a Time Of Day */
   public static final String OID_TIME_OF_DAY = "1.3.6.1.4.1.61799.5.40.32";
   public static final String NAME_TIME_OF_DAY = "TimeOfDay";
@@ -700,97 +516,4 @@ public class StandardTypes
     new DefaultTypeDefinition(OID_TIME_OF_DAY, null,
           NAME_TIME_OF_DAY, "Time Of Day", new TimeType(DateTime.TimeAccuracy.SECOND, true), StandardDateFormatters.TimeOfDayConverter.getInstance());
   
-  
-  /** Object Identifier for syntax of a Time Of Day with Timezone */
-  public static final String OID_TIME_OF_DAY_TZ = "1.3.6.1.4.1.61799.5.40.35";
-  public static final String NAME_TIME_OF_DAY_TZ = "TimeOfDayWithTimezone";
-  /**
-   * Type definition for LDAP Time Of Day with Timezone syntax, a time of day with second precision and timezone. A Time Of Day with Timezone type is represented by a
-   * <code>com.optimasc.lang.GregorianDatetimeCalendar</code> java object.
-   */
-  public static final EntityTypeDefinition TIME_OF_DAY_TZ =
-  /* OID, NamespaceURI, name, Description, datatype */
-    new DefaultTypeDefinition(OID_TIME_OF_DAY_TZ, null,
-          NAME_TIME_OF_DAY_TZ, "Time Of Day with Timezone", new TimeType(DateTime.TimeAccuracy.SECOND, false), StandardDateFormatters.TimeOfDayWithTimezoneConverter.getInstance());
-  
-  
-  /** Object Identifier for syntax of a UInt8 */
-  public static final String OID_UINT8 = "1.3.6.1.4.1.61799.5.40.2.21";
-  public static final String NAME_UINT8 = "UInt8";
-  /**
-   * Type definition for LDAP UInt8 syntax, an unsigned integer within the range 0 to 255. A UInt8 type is represented by a
-   * <code>java.lang.Integer</code> java object.
-   */
-  public static final EntityTypeDefinition UINT8 =
-  /* OID, NamespaceURI, name, Description, datatype */
-    new DefaultTypeDefinition(OID_UINT8, null,
-          NAME_UINT8, "UInt8", new UnsignedByteType(), NumericFormatters.unsignedByteConverter.getInstance());
-  
-  
-  /** Object Identifier for syntax of a UInt16 */
-  public static final String OID_UINT16 = "1.3.6.1.4.1.61799.5.40.2.22";
-  public static final String NAME_UINT16 = "UInt16";
-  /**
-   * Type definition for LDAP UInt16 syntax, an unsigned integer within the range 0 to 65535. A UInt16 type is represented by a
-   * <code>java.lang.Integer</code> java object.
-   */
-  public static final EntityTypeDefinition UINT16 =
-  /* OID, NamespaceURI, name, Description, datatype */
-    new DefaultTypeDefinition(OID_UINT16, null,
-          NAME_UINT16, "UInt16", new UnsignedShortType(), NumericFormatters.unsignedShortConverter.getInstance());
-  
-  
-  /** Object Identifier for syntax of a UInt32 */
-  public static final String OID_UINT32 = "1.3.6.1.4.1.61799.5.40.2.24";
-  public static final String NAME_UINT32 = "UInt32";
-  /**
-   * Type definition for LDAP UInt32 syntax, an unsigned integer within the range 0 to 4294967295. A UInt32 type is represented by a
-   * <code>java.lang.Long</code> java object.
-   */
-  public static final EntityTypeDefinition UINT32 =
-  /* OID, NamespaceURI, name, Description, datatype */
-    new DefaultTypeDefinition(OID_UINT32, null,
-          NAME_UINT32, "UInt32", new UnsignedIntType(), NumericFormatters.unsignedIntConverter.getInstance());
-  
-  
-  /** Object Identifier for syntax of a UInt64 */
-  public static final String OID_UINT64 = "1.3.6.1.4.1.61799.5.40.2.28";
-  public static final String NAME_UINT64 = "UInt64";
-  /**
-   * Type definition for LDAP UInt64 syntax, an unsigned integer within the range 0 to 18446744073709551615. A UInt64 type is represented by a
-   * <code>java.math.BigInteger</code> java object.
-   */
-  public static final EntityTypeDefinition UINT64 =
-  /* OID, NamespaceURI, name, Description, datatype */
-    new DefaultTypeDefinition(OID_UINT64, null,
-          NAME_UINT64, "UInt64", new UnsignedLongType(), NumericFormatters.unsignedLongConverter.getInstance());
-  
-  
-  /** Object Identifier for syntax of a URI */
-  public static final String OID_URI = "1.3.6.1.4.1.61799.5.40.26.4";
-  public static final String NAME_URI = "URI";
-  /**
-   * Type definition for LDAP URI syntax, a Uniform Resource Identifier as defined by IETF RFC 3986. A URI type is represented by a
-   * <code>java.net.URI</code> java object.
-   */
-  public static final EntityTypeDefinition URI =
-  /* OID, NamespaceURI, name, Description, datatype */
-    new DefaultTypeDefinition(OID_URI, null,
-          NAME_URI, "URI", new URIType(), StandardFormatters.URIConverter.getInstance());
-  
-  
-  /** Object Identifier for syntax of a Visible String */
-  public static final String OID_VISIBLE_STRING = "1.3.6.1.4.1.61799.5.40.26";
-  public static final String NAME_VISIBLE_STRING = "VisibleString";
-  /**
-   * Type definition for LDAP Visible String syntax, a string of printable ASCII characters (U+0020 to U+007E). A Visible String type is represented by a
-   * <code>java.lang.String</code> java object.
-   */
-  public static final EntityTypeDefinition VISIBLE_STRING =
-  /* OID, NamespaceURI, name, Description, datatype */
-    new DefaultTypeDefinition(OID_VISIBLE_STRING, null,
-          NAME_VISIBLE_STRING, "Visible String", new StringType(new UnnamedTypeReference(new VisibleCharType())), StandardFormatters.VisibleStringConverter.getInstance());
-  
-  
-
 }

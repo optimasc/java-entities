@@ -1,7 +1,7 @@
 package com.optimasc.entity.schema;
 
 /**
- * The global, read-only schema that owns every pre-defined standard
+ * The global, schema that owns every pre-defined standard
  * definition: the syntaxes of {@link StandardTypes}, the attribute
  * definitions of {@link StandardAttributes}, and the object-class
  * definitions of {@link StandardClasses}.
@@ -21,11 +21,6 @@ package com.optimasc.entity.schema;
  * definitions <em>by name</em> through delegation, without holding the
  * constant instances itself.</p>
  *
- * <h3>Read-only</h3>
- * <p>{@link #getInstance()} returns the populated catalog typed as
- * {@link Schema}, which exposes no mutators. The underlying store is populated
- * exactly once in a static initializer and is never modified thereafter.</p>
- *
  * <p>This class is not instantiable.</p>
  *
  * @see StandardTypes
@@ -40,7 +35,7 @@ public final class StandardSchema
    * The singleton instance, populated once at class-load time and exposed
    * only through the read-only {@link Schema} interface.
    */
-  private static final Schema INSTANCE = build();
+  private static final BasicSchema INSTANCE = build();
 
   /** Not instantiable. */
   private StandardSchema()
@@ -53,7 +48,7 @@ public final class StandardSchema
    *
    * @return The non-null global {@link Schema} singleton.
    */
-  public static Schema getInstance()
+  public static BasicSchema getInstance()
   {
     return INSTANCE;
   }
@@ -63,11 +58,13 @@ public final class StandardSchema
    * registration also binds the corresponding standard definition constant's
    * namespace back-reference to the returned schema.
    */
-  private static Schema build()
+  private static BasicSchema build()
   {
     BasicSchema schema = new BasicSchema();
 
     // --- Type definitions (syntaxes) ------------------------------------
+    
+    // Base ASN.1 equivalent syntaxes
     schema.add(StandardTypes.BOOLEAN);
     schema.add(StandardTypes.STRING);
     schema.add(StandardTypes.INTEGER);
@@ -80,6 +77,11 @@ public final class StandardSchema
     schema.add(StandardTypes.DATE);
     schema.add(StandardTypes.DATETIME);
     schema.add(StandardTypes.DURATION);
+    schema.add(StandardTypes.VISIBLE_STRING);
+    schema.add(StandardTypes.REAL);
+    schema.add(StandardTypes.TIME_OF_DAY);
+    // Extended equivalent syntaxes - removed to save memory/load time
+/*    
     schema.add(StandardTypes.FLOAT32);
     schema.add(StandardTypes.FLOAT64);
     schema.add(StandardTypes.INT8);
@@ -93,19 +95,18 @@ public final class StandardSchema
     schema.add(StandardTypes.OPENDATE);
     schema.add(StandardTypes.PERCENTAGE);
     schema.add(StandardTypes.QUALIFIED_NAME);
-    schema.add(StandardTypes.REAL);
     schema.add(StandardTypes.TEXT);
     schema.add(StandardTypes.TOKEN);
-    schema.add(StandardTypes.TIME_OF_DAY);
     schema.add(StandardTypes.TIME_OF_DAY_TZ);
     schema.add(StandardTypes.UINT8);
     schema.add(StandardTypes.UINT16);
     schema.add(StandardTypes.UINT32);
     schema.add(StandardTypes.UINT64);
     schema.add(StandardTypes.URI);
-    schema.add(StandardTypes.VISIBLE_STRING);
+*/    
 
     // --- XMLSchema 1.1 type definitions ---------------------------------
+    // Removed to save memory/load-time
 /*    schema.add(StandardTypes.XSD_BOOLEAN);
     schema.add(StandardTypes.XSD_BASE64BINARY);
     schema.add(StandardTypes.XSD_HEXBINARY);
