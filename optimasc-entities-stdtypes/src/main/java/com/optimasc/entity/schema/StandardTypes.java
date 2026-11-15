@@ -17,7 +17,9 @@ import com.optimasc.datatypes.defined.UCS2CharType;
 import com.optimasc.datatypes.defined.UCS2StringType;
 import com.optimasc.datatypes.defined.UnsignedByteType;
 import com.optimasc.datatypes.defined.UnsignedIntType;
+import com.optimasc.datatypes.defined.UnsignedLongType;
 import com.optimasc.datatypes.defined.UnsignedShortType;
+import com.optimasc.datatypes.defined.VisibleCharType;
 import com.optimasc.datatypes.defined.YearType;
 import com.optimasc.datatypes.derived.UnicodeCharType;
 import com.optimasc.datatypes.generated.LanguageType;
@@ -26,6 +28,8 @@ import com.optimasc.datatypes.primitives.DateTimeType;
 import com.optimasc.datatypes.primitives.DecimalType;
 import com.optimasc.datatypes.primitives.IntegralType;
 import com.optimasc.datatypes.primitives.RealType;
+import com.optimasc.datatypes.primitives.TimeType;
+import com.optimasc.datatypes.primitives.URIType;
 import com.optimasc.text.NumericFormatters;
 import com.optimasc.text.StandardDateFormatters;
 import com.optimasc.text.StandardFormatters;
@@ -181,7 +185,7 @@ public class StandardTypes
   public static final EntityTypeDefinition OCTET_STRING =
   /* OID, NamespaceURI, name, Description, Class, formatter, allowedValues */
   new DefaultTypeDefinition(OID_OCTET_STRING, 
-      null, "OCTET STRING",
+      null, "binary",
       "OCTET STRING", new BinaryType(),null);
 
   /** Object Identifier for syntax of a class type */
@@ -454,14 +458,98 @@ public class StandardTypes
           XSD_NAME_TOKEN, "XMLSchema token", new StringType(new UnnamedTypeReference(new UnicodeCharType())), StandardFormatters.XSDTokenConverter.getInstance());
   
   
-//  public static final String XSD_NAME_UINT64 = "unsignedLong";
+  public static final String XSD_NAME_UINT64 = "unsignedLong";
   /**
    * Type definition for XMLSchema unsignedLong type. An unsignedLong type is represented by a
-   * <code>java.math.BigInteger</code> java object. 
+   * <code>java.math.BigInteger</code> java object.
    */
-//  public static final EntityTypeDefinition XSD_UINT64 =
-//  /* OID, NamespaceURI, name, Description, datatype */
-//    new DefaultTypeDefinition(null, XSD_NAMESPACE_URI,
-//          XSD_NAME_UINT64, "XMLSchema unsignedLong", new UnsignedLongType(), NumericFormatters.XSDUnsignedLongConverter.getInstance());
+  public static final EntityTypeDefinition XSD_UINT64 =
+  /* OID, NamespaceURI, name, Description, datatype */
+    new DefaultTypeDefinition(null, XSD_NAMESPACE_URI,
+          XSD_NAME_UINT64, "XMLSchema unsignedLong", new UnsignedLongType(), NumericFormatters.XSDUnsignedLongConverter.getInstance());
+
+
+  public static final String XSD_NAME_ANYURI = "anyURI";
+  /**
+   * Type definition for XMLSchema anyURI type. An anyURI type is represented by a
+   * <code>java.net.URI</code> java object. Only non-empty URI references conforming
+   * to IETF RFC 3986 are accepted; IRIs are rejected.
+   */
+  public static final EntityTypeDefinition XSD_ANYURI =
+  /* OID, NamespaceURI, name, Description, datatype */
+    new DefaultTypeDefinition(null, XSD_NAMESPACE_URI,
+          XSD_NAME_ANYURI, "XMLSchema anyURI", new URIType(), StandardFormatters.URIConverter.getInstance());
+
+
+  public static final String XSD_NAME_DATETIME = "dateTime";
+  /**
+   * Type definition for XMLSchema dateTime type. A dateTime type is represented by a
+   * <code>com.optimasc.lang.GregorianDatetimeCalendar</code> java object, with
+   * second precision and no timezone. Values with a timezone are rejected.
+   */
+  public static final EntityTypeDefinition XSD_DATETIME =
+  /* OID, NamespaceURI, name, Description, datatype */
+    new DefaultTypeDefinition(null, XSD_NAMESPACE_URI,
+          XSD_NAME_DATETIME, "XMLSchema dateTime", new DateTimeType(), StandardDateFormatters.XSDDateTimeConverter.getInstance());
+
+
+  public static final String XSD_NAME_TIME = "time";
+  /**
+   * Type definition for XMLSchema time type. A time type is represented by a
+   * <code>com.optimasc.lang.GregorianDatetimeCalendar</code> java object, with
+   * second precision and no timezone. Values with a timezone are rejected.
+   */
+  public static final EntityTypeDefinition XSD_TIME =
+  /* OID, NamespaceURI, name, Description, datatype */
+    new DefaultTypeDefinition(null, XSD_NAMESPACE_URI,
+          XSD_NAME_TIME, "XMLSchema time", new TimeType(), StandardDateFormatters.XSDTimeConverter.getInstance());
+
+
+  public static final String XSD_NAME_DURATION = "duration";
+  /**
+   * Type definition for XMLSchema duration type. The Duration category is
+   * left unmapped in this binding (Schema Value Representation Specification,
+   * Section 8.2): a duration type is represented by a
+   * <code>java.lang.String</code> java object holding the canonical lexical
+   * form. Negative durations are rejected.
+   */
+  public static final EntityTypeDefinition XSD_DURATION =
+  /* OID, NamespaceURI, name, Description, datatype */
+    new DefaultTypeDefinition(null, XSD_NAMESPACE_URI,
+          XSD_NAME_DURATION, "XMLSchema duration", new StringType(new UnnamedTypeReference(new VisibleCharType())), StandardDateFormatters.XSDDurationConverter.getInstance());
+
+
+  public static final String XSD_NAME_NAME = "Name";
+  /**
+   * Type definition for XMLSchema Name type. A Name type is represented by a
+   * <code>java.lang.String</code> java object.
+   */
+  public static final EntityTypeDefinition XSD_NAME =
+  /* OID, NamespaceURI, name, Description, datatype */
+    new DefaultTypeDefinition(null, XSD_NAMESPACE_URI,
+          XSD_NAME_NAME, "XMLSchema Name", new StringType(new UnnamedTypeReference(new UnicodeCharType())), StandardFormatters.XSDNameConverter.getInstance());
+
+
+  public static final String XSD_NAME_NCNAME = "NCName";
+  /**
+   * Type definition for XMLSchema NCName type. A NCName type is represented by a
+   * <code>java.lang.String</code> java object. This is distinct from the
+   * draft-codere-ldapsyntax NCName syntax, which has a smaller repertoire.
+   */
+  public static final EntityTypeDefinition XSD_NCNAME =
+  /* OID, NamespaceURI, name, Description, datatype */
+    new DefaultTypeDefinition(null, XSD_NAMESPACE_URI,
+          XSD_NAME_NCNAME, "XMLSchema NCName", new StringType(new UnnamedTypeReference(new UnicodeCharType())), StandardFormatters.XSDNCNameConverter.getInstance());
+
+
+  public static final String XSD_NAME_NMTOKEN = "NMTOKEN";
+  /**
+   * Type definition for XMLSchema NMTOKEN type. A NMTOKEN type is represented by a
+   * <code>java.lang.String</code> java object.
+   */
+  public static final EntityTypeDefinition XSD_NMTOKEN =
+  /* OID, NamespaceURI, name, Description, datatype */
+    new DefaultTypeDefinition(null, XSD_NAMESPACE_URI,
+          XSD_NAME_NMTOKEN, "XMLSchema NMTOKEN", new StringType(new UnnamedTypeReference(new UnicodeCharType())), StandardFormatters.XSDNMTOKENConverter.getInstance());
 
 }

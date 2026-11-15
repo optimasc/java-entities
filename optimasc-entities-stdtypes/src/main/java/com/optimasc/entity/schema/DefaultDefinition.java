@@ -124,7 +124,7 @@ public abstract class DefaultDefinition implements EntityDefinition
   public DefaultDefinition(String id, String namespaceURI, String localName)
   {
     this(namespaceURI, localName);
-    setOID(id);
+    if (id != null) setOID(id);
   }
 
   /** Constructs a definition with a local name, an explicit
@@ -135,8 +135,7 @@ public abstract class DefaultDefinition implements EntityDefinition
    *    <li>{@link Definition#KEY_OBSOLETE}: {@code false}</li>
    *  </ul>
    *
-   * @param id            [in] Unique identifier. Must not be {@code null}
-   *                      or empty.
+   * @param id            [in] Unique identifier. Mayt be {@code null}.
    * @param namespaceURI  [in] Namespace URI, or {@code null}.
    * @param localName [in] Name. Must not be {@code null}
    *                      or empty, and must not exceed
