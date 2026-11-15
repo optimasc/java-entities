@@ -5,8 +5,12 @@ import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import com.optimasc.attribute.Attribute;
 import com.optimasc.attribute.DefaultAttribute;
+import com.optimasc.datatypes.Convertable;
 import com.optimasc.datatypes.Datatype;
+import com.optimasc.datatypes.TypeUtilities;
+import com.optimasc.datatypes.facets.EnumerationFacet;
 import com.optimasc.schema.Definition;
 import com.optimasc.schema.TypeDefinition;
 
@@ -71,15 +75,19 @@ public class DefaultTypeDefinition extends DefaultDefinition
    *                     display.
    * @param datatype     [in] The datatype defining the value space.
    *                     Must not be {@code null}.
+   * @param format       [in] The format used for parsing and
+   *                     converting to lexical space.
+   *                     Must not be {@code null}.
    * @throws IllegalArgumentException if any argument violates its
    *   constraints.
    */
   public DefaultTypeDefinition(String id, String namespaceURI,
-      String localName, String description, Datatype datatype)
+      String localName, String description, Datatype datatype, Format format)
   {
     super(id, namespaceURI, localName, description);
     setObjectClass(TypeDefinition.OBJECT_CLASS_NAME);
     setDatatype(datatype);
+    setFormat(format);
   }
   
   
@@ -121,7 +129,7 @@ public class DefaultTypeDefinition extends DefaultDefinition
   * @throws IllegalArgumentException if {@code datatype} is
   *   {@code null}.
   */
- public void setDatatype(Datatype datatype)
+ protected void setDatatype(Datatype datatype)
  {
    if (datatype == null)
      throw new IllegalArgumentException("Datatype must not be null.");
@@ -130,6 +138,19 @@ public class DefaultTypeDefinition extends DefaultDefinition
    attr.add(datatype);
    attributes.put(attr);
  }
+ 
+ /** Sets the format defining the string formatting of this type.
+ *
+ * @param format [in] A potentially {@link java.text.Format} instance.
+ */
+protected void setFormat(Format format)
+{
+  DefaultAttribute attr =
+      new DefaultAttribute(KEY_FORMAT, Format.class);
+  attr.add(format);
+  attributes.put(attr);
+}
+ 
 
  /** {@inheritDoc} */
  public Datatype getDatatype()
@@ -157,7 +178,7 @@ public class DefaultTypeDefinition extends DefaultDefinition
   *   {@link Datatype}, cannot be instantiated (no public no-arg
   *   constructor), or is not accessible.
   */
- public void setDatatypeByName(String datatypeClassName)
+ protected void setDatatypeByName(String datatypeClassName)
  {
    if (datatypeClassName == null || datatypeClassName.length() == 0)
      throw new IllegalArgumentException(
@@ -205,15 +226,58 @@ public class DefaultTypeDefinition extends DefaultDefinition
 @Override
 public Class<?> getValueClass()
 {
-  // TODO Auto-generated method stub
+  Attribute attr = attributes.get(KEY_DATATYPE);
+  if (attr != null)
+  {
+    Datatype datatype = (Datatype) attr.get(0);
+    return datatype.getClassType();
+  }
+  throw new IllegalStateException("Internal error: `Datatype` is not valid");
+}
+
+@Override
+public Format getFormat()
+{
+  Attribute attr = attributes.get(KEY_FORMAT);
+  if (attr != null)
+  {
+    Format fmt = (Format) attr.get(0);
+    return fmt;
+  }
   return null;
 }
+
 
 @Override
 public boolean isValid(Object value)
 {
-  // TODO Auto-generated method stub
-  return false;
+  if (value==null)
+    return false;
+  Attribute attr = attributes.get(KEY_DATATYPE);
+  
+  if (attr != null)
+  {
+    Datatype datatype = (Datatype) attr.get(0);
+    if (datatype.getClassType()!=null)
+    {
+      if (datatype.getClassType()!=value.getClass())
+      {
+        throw new IllegalArgumentException("Incompatible class for this type.");
+      }
+    }
+    // Now check the known constraints
+    if (datatype instanceof Convertable)
+    {
+        TypeUtilities.TypeCheckResult conversionResult = new TypeUtilities.TypeCheckResult();
+        Convertable convertable = (Convertable)datatype;
+        Object res = convertable.toValue(value, conversionResult);
+        if (res == null)
+          return false;
+        return conversionResult.error==null; 
+    }
+    return true;
+  }
+  throw new IllegalStateException("Internal error: `Datatype` is not valid");
 } 
 
 
