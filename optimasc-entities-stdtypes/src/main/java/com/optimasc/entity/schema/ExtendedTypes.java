@@ -25,6 +25,185 @@ import com.optimasc.text.StandardFormatters;
 
 import omg.org.astm.type.UnnamedTypeReference;
 
+/**
+ * Extended type definitions: the syntaxes of IETF draft-codere-ldapsyntax that
+ * have no ASN.1 built-in equivalent. Most are subtypes of an ASN.1 built-in
+ * type, such as a constrained <code>INTEGER</code> or a string with a
+ * restricted character repertoire.
+ *
+ * <p>
+ * These type definitions are not automatically  registered in 
+ * {@link  StandardSchema}, they should be registereed manually 
+ * if needed. The base syntaxes are defined by {@link StandardTypes}.
+ * </p>
+ *
+ * <table>
+ * <caption>Extended type definitions</caption>
+ * <tr>
+ * <th>Java Name</th>
+ * <th>Expanded Name</th>
+ * <th>ID</th>
+ * <th>Java Object representation</th>
+ * <th>Description</th>
+ * </tr>
+ * <tr>
+ * <td>{@link #FLOAT32}</td>
+ * <td>Float32</td>
+ * <td>{@link #OID_FLOAT32}</td>
+ * <td><code>java.lang.Float</code></td>
+ * <td>An IEEE 754 single precision floating point value</td>
+ * </tr>
+ * <tr>
+ * <td>{@link #FLOAT64}</td>
+ * <td>Float64</td>
+ * <td>{@link #OID_FLOAT64}</td>
+ * <td><code>java.lang.Double</code></td>
+ * <td>An IEEE 754 double precision floating point value</td>
+ * </tr>
+ * <tr>
+ * <td>{@link #INT8}</td>
+ * <td>Int8</td>
+ * <td>{@link #OID_INT8}</td>
+ * <td><code>java.lang.Integer</code></td>
+ * <td>A signed integer within the range -128 to 127</td>
+ * </tr>
+ * <tr>
+ * <td>{@link #INT16}</td>
+ * <td>Int16</td>
+ * <td>{@link #OID_INT16}</td>
+ * <td><code>java.lang.Integer</code></td>
+ * <td>A signed integer within the range -32768 to 32767</td>
+ * </tr>
+ * <tr>
+ * <td>{@link #INT32}</td>
+ * <td>Int32</td>
+ * <td>{@link #OID_INT32}</td>
+ * <td><code>java.lang.Integer</code></td>
+ * <td>A signed integer within the range -2147483648 to 2147483647</td>
+ * </tr>
+ * <tr>
+ * <td>{@link #INT64}</td>
+ * <td>Int64</td>
+ * <td>{@link #OID_INT64}</td>
+ * <td><code>java.lang.Long</code></td>
+ * <td>A signed integer within the range -9223372036854775808 to 9223372036854775807</td>
+ * </tr>
+ * <tr>
+ * <td>{@link #LANGUAGE}</td>
+ * <td>Language</td>
+ * <td>{@link #OID_LANGUAGE}</td>
+ * <td><code>java.util.Locale</code></td>
+ * <td>A language tag as defined by IETF BCP 47</td>
+ * </tr>
+ * <tr>
+ * <td>{@link #MEDIA_TYPE}</td>
+ * <td>MediaType</td>
+ * <td>{@link #OID_MEDIA_TYPE}</td>
+ * <td><code>com.optimasc.lang.MediaType</code></td>
+ * <td>An Internet media type as defined by IETF RFC 6838</td>
+ * </tr>
+ * <tr>
+ * <td>{@link #NCNAME}</td>
+ * <td>NCName</td>
+ * <td>{@link #OID_NCNAME}</td>
+ * <td><code>java.lang.String</code></td>
+ * <td>An identifier that is a subset of the XML NCName</td>
+ * </tr>
+ * <tr>
+ * <td>{@link #NORMALIZED_STRING}</td>
+ * <td>NormalizedString</td>
+ * <td>{@link #OID_NORMALIZED_STRING}</td>
+ * <td><code>java.lang.String</code></td>
+ * <td>A whitespace-normalized Unicode string</td>
+ * </tr>
+ * <tr>
+ * <td>{@link #OPENDATE}</td>
+ * <td>OpenDate</td>
+ * <td>{@link #OID_OPENDATE}</td>
+ * <td><code>com.optimasc.lang.GregorianDatetimeCalendar</code></td>
+ * <td>A date with year, month or day precision, or a date and time with timezone, with a year from 1582 to 9999</td>
+ * </tr>
+ * <tr>
+ * <td>{@link #PERCENTAGE}</td>
+ * <td>Percentage</td>
+ * <td>{@link #OID_PERCENTAGE}</td>
+ * <td><code>java.lang.Integer</code></td>
+ * <td>An integer within the range 0 to 100</td>
+ * </tr>
+ * <tr>
+ * <td>{@link #QUALIFIED_NAME}</td>
+ * <td>QualifiedName</td>
+ * <td>{@link #OID_QUALIFIED_NAME}</td>
+ * <td><code>java.lang.String</code></td>
+ * <td>An identifier with an optional namespace prefix, a subset of the XML QName</td>
+ * </tr>
+ * <tr>
+ * <td>{@link #TEXT}</td>
+ * <td>Text</td>
+ * <td>{@link #OID_TEXT}</td>
+ * <td><code>java.lang.String</code></td>
+ * <td>A Unicode string with a restricted character repertoire</td>
+ * </tr>
+ * <tr>
+ * <td>{@link #TOKEN}</td>
+ * <td>Token</td>
+ * <td>{@link #OID_TOKEN}</td>
+ * <td><code>java.lang.String</code></td>
+ * <td>A whitespace-normalized Unicode string with no leading, trailing or consecutive spaces</td>
+ * </tr>
+ * <tr>
+ * <td>{@link #TIME_OF_DAY_TZ}</td>
+ * <td>TimeOfDayWithTimezone</td>
+ * <td>{@link #OID_TIME_OF_DAY_TZ}</td>
+ * <td><code>com.optimasc.lang.GregorianDatetimeCalendar</code></td>
+ * <td>A time of day with second precision and timezone</td>
+ * </tr>
+ * <tr>
+ * <td>{@link #UINT8}</td>
+ * <td>UInt8</td>
+ * <td>{@link #OID_UINT8}</td>
+ * <td><code>java.lang.Integer</code></td>
+ * <td>An unsigned integer within the range 0 to 255</td>
+ * </tr>
+ * <tr>
+ * <td>{@link #UINT16}</td>
+ * <td>UInt16</td>
+ * <td>{@link #OID_UINT16}</td>
+ * <td><code>java.lang.Integer</code></td>
+ * <td>An unsigned integer within the range 0 to 65535</td>
+ * </tr>
+ * <tr>
+ * <td>{@link #UINT32}</td>
+ * <td>UInt32</td>
+ * <td>{@link #OID_UINT32}</td>
+ * <td><code>java.lang.Long</code></td>
+ * <td>An unsigned integer within the range 0 to 4294967295</td>
+ * </tr>
+ * <tr>
+ * <td>{@link #UINT64}</td>
+ * <td>UInt64</td>
+ * <td>{@link #OID_UINT64}</td>
+ * <td><code>java.math.BigInteger</code></td>
+ * <td>An unsigned integer within the range 0 to 18446744073709551615</td>
+ * </tr>
+ * <tr>
+ * <td>{@link #URI}</td>
+ * <td>URI</td>
+ * <td>{@link #OID_URI}</td>
+ * <td><code>java.net.URI</code></td>
+ * <td>A Uniform Resource Identifier as defined by IETF RFC 3986</td>
+ * </tr>
+ * </table>
+ *
+ * <h2>Identifiers</h2>
+ * <p>Each type has two stable identifiers: its expanded name, exposed as a
+ * {@code NAME_*} constant, and its OID, exposed as an {@code OID_*}
+ * constant. These types have no namespace, so their expanded name is their
+ * local name.</p>
+ *
+ * @see StandardTypes
+ * @see XMLSchemaTypes
+ */
 public class ExtendedTypes
 {
   /*---------------- Non-Base ASN.1 IETF draft-codere-ldapsyntax syntaxes ----------------*/

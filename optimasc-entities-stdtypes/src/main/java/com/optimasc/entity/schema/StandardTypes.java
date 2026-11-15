@@ -3,30 +3,17 @@ package com.optimasc.entity.schema;
 import com.optimasc.datatypes.aggregate.ClassType;
 import com.optimasc.datatypes.defined.ASCIICharType;
 import com.optimasc.datatypes.defined.BinaryType;
-import com.optimasc.datatypes.defined.ByteType;
 import com.optimasc.datatypes.defined.DateType;
 import com.optimasc.datatypes.defined.DoubleType;
-import com.optimasc.datatypes.defined.IntType;
-import com.optimasc.datatypes.defined.LongType;
 import com.optimasc.datatypes.defined.ObjectIdentifierType;
-import com.optimasc.datatypes.defined.PercentageType;
-import com.optimasc.datatypes.defined.ShortType;
-import com.optimasc.datatypes.defined.SingleType;
 import com.optimasc.datatypes.defined.StringType;
-import com.optimasc.datatypes.defined.UnsignedByteType;
-import com.optimasc.datatypes.defined.UnsignedIntType;
-import com.optimasc.datatypes.defined.UnsignedLongType;
-import com.optimasc.datatypes.defined.UnsignedShortType;
 import com.optimasc.datatypes.defined.VisibleCharType;
 import com.optimasc.datatypes.derived.UnicodeCharType;
-import com.optimasc.datatypes.generated.LanguageType;
 import com.optimasc.datatypes.primitives.BooleanType;
 import com.optimasc.datatypes.primitives.CalendarDurationType;
 import com.optimasc.datatypes.primitives.DateTimeType;
 import com.optimasc.datatypes.primitives.IntegralType;
-import com.optimasc.datatypes.primitives.MediaTypeType;
 import com.optimasc.datatypes.primitives.TimeType;
-import com.optimasc.datatypes.primitives.URIType;
 import com.optimasc.date.DateTime;
 import com.optimasc.text.CalendarDurationConverter;
 import com.optimasc.text.NumericFormatters;
@@ -35,290 +22,164 @@ import com.optimasc.text.StandardFormatters;
 
 import omg.org.astm.type.UnnamedTypeReference;
 
-
 /**
- * Basic type definitions. This includes and defines the most important and
- * minimum type definitions that can be useful.
- * 
+ * Base type definitions: the syntaxes that are equivalent to an ASN.1
+ * built-in type (ITU-T X.680), defined by IETF RFC 4517 and IETF
+ * draft-codere-ldapsyntax. {@link #JAVA_CLASS} is the only definition that
+ * has no ASN.1 equivalent.
+ *
  * <p>
- * The following type definitions are pre-defined and available for use:
+ * These are the only type definitions registered in {@link StandardSchema}.
+ * Syntaxes of IETF draft-codere-ldapsyntax with no ASN.1 built-in equivalent
+ * are defined by {@link ExtendedTypes}, and the XML Schema 1.1 datatypes by
+ * {@link XMLSchemaTypes}.
  * </p>
+ *
  * <table>
+ * <caption>Base type definitions</caption>
  * <tr>
  * <th>Java Name</th>
- * <th>ExpandedName</th>
+ * <th>Expanded Name</th>
  * <th>ID</th>
+ * <th>ASN.1 type</th>
  * <th>Java Object representation</th>
  * <th>Description</th>
- * </tr>
- * <tr>
- * <td>{@link #OCTET_STRING}</td>
- * <td>binary</td>
- * <td>{@link #OID_OCTET_STRING}</td>
- * <td>byte[]</td>
- * <td>Binary data, exchanged with the backend as raw octets</td>
  * </tr>
  * <tr>
  * <td>{@link #BOOLEAN}</td>
  * <td>BOOLEAN</td>
  * <td>{@link #OID_BOOLEAN}</td>
- * <td>java.lang.Boolean</td>
+ * <td>BOOLEAN</td>
+ * <td><code>java.lang.Boolean</code></td>
  * <td>A boolean value</td>
+ * </tr>
+ * <tr>
+ * <td>{@link #STRING}</td>
+ * <td>DirectoryString</td>
+ * <td>{@link #OID_STRING}</td>
+ * <td>DirectoryString (X.520)</td>
+ * <td><code>java.lang.String</code></td>
+ * <td>A Unicode string</td>
  * </tr>
  * <tr>
  * <td>{@link #INTEGER}</td>
  * <td>INTEGER</td>
  * <td>{@link #OID_INTEGER}</td>
- * <td>java.math.BigInteger</td>
- * <td>An integer value</td>
+ * <td>INTEGER</td>
+ * <td><code>java.math.BigInteger</code></td>
+ * <td>An integer value of unlimited range</td>
  * </tr>
  * <tr>
  * <td>{@link #OBJECT_IDENTIFIER}</td>
- * <td>objectIdentifier</td>
+ * <td>OBJECT IDENTIFIER</td>
  * <td>{@link #OID_OBJECT_IDENTIFIER}</td>
- * <td>java.lang.String</td>
- * <td>An object identifier value, where components are digits</td>
+ * <td>OBJECT IDENTIFIER</td>
+ * <td><code>java.lang.String</code></td>
+ * <td>An object identifier in dotted-decimal notation</td>
  * </tr>
  * <tr>
- * <td>{@link #STRING}</td>
- * <td>UnboundedDirectoryString</td>
- * <td>{@link #OID_STRING}</td>
- * <td>java.lang.String</td>
- * <td>A string value</td>
+ * <td>{@link #OCTET_STRING}</td>
+ * <td>OCTET STRING</td>
+ * <td>{@link #OID_OCTET_STRING}</td>
+ * <td>OCTET STRING</td>
+ * <td><code>byte[]</code></td>
+ * <td>Binary data, exchanged with the backend as raw octets</td>
+ * </tr>
+ * <tr>
+ * <td>{@link #JAVA_CLASS}</td>
+ * <td>javaClass</td>
+ * <td></td>
+ * <td>(none)</td>
+ * <td><code>java.lang.Class</code></td>
+ * <td>A Java class</td>
  * </tr>
  * <tr>
  * <td>{@link #GENERALIZEDTIME}</td>
  * <td>GeneralizedTime</td>
  * <td>{@link #OID_GENERALIZEDTIME}</td>
- * <td>com.optimasc.lang.GregorianDatetimeCalendar</td>
+ * <td>GeneralizedTime</td>
+ * <td><code>com.optimasc.lang.GregorianDatetimeCalendar</code></td>
  * <td>A date and time with millisecond precision and timezone</td>
  * </tr>
  * <tr>
  * <td>{@link #IA5STRING}</td>
  * <td>IA5String</td>
  * <td>{@link #OID_IA5STRING}</td>
- * <td>java.lang.String</td>
+ * <td>IA5String</td>
+ * <td><code>java.lang.String</code></td>
  * <td>A string of characters from U+0000 to U+007F</td>
  * </tr>
  * <tr>
  * <td>{@link #PRINTABLESTRING}</td>
  * <td>PrintableString</td>
  * <td>{@link #OID_PRINTABLESTRING}</td>
- * <td>java.lang.String</td>
+ * <td>PrintableString</td>
+ * <td><code>java.lang.String</code></td>
  * <td>A string of characters from the PrintableString repertoire</td>
  * </tr>
  * <tr>
  * <td>{@link #DATE}</td>
  * <td>Date</td>
  * <td>{@link #OID_DATE}</td>
- * <td>com.optimasc.lang.GregorianDatetimeCalendar</td>
+ * <td>DATE</td>
+ * <td><code>com.optimasc.lang.GregorianDatetimeCalendar</code></td>
  * <td>A date with day precision, with a year from 1582 to 9999</td>
  * </tr>
  * <tr>
  * <td>{@link #DATETIME}</td>
  * <td>Date-Time</td>
  * <td>{@link #OID_DATETIME}</td>
- * <td>com.optimasc.lang.GregorianDatetimeCalendar</td>
+ * <td>DATE-TIME</td>
+ * <td><code>com.optimasc.lang.GregorianDatetimeCalendar</code></td>
  * <td>A date and local time with second precision and no timezone, with a year from 1582 to 9999</td>
  * </tr>
  * <tr>
  * <td>{@link #DURATION}</td>
  * <td>Duration</td>
  * <td>{@link #OID_DURATION}</td>
- * <td>javax.xml.datatype.Duration</td>
- * <td>An elapsed time with millisecond precision</td>
- * </tr>
- * <tr>
- * <td>{@link #FLOAT32}</td>
- * <td>Float32</td>
- * <td>{@link #OID_FLOAT32}</td>
- * <td>java.lang.Float</td>
- * <td>An IEEE 754 single precision floating point value</td>
- * </tr>
- * <tr>
- * <td>{@link #FLOAT64}</td>
- * <td>Float64</td>
- * <td>{@link #OID_FLOAT64}</td>
- * <td>java.lang.Double</td>
- * <td>An IEEE 754 double precision floating point value</td>
- * </tr>
- * <tr>
- * <td>{@link #INT8}</td>
- * <td>Int8</td>
- * <td>{@link #OID_INT8}</td>
- * <td>java.lang.Integer</td>
- * <td>A signed integer within the range -128 to 127</td>
- * </tr>
- * <tr>
- * <td>{@link #INT16}</td>
- * <td>Int16</td>
- * <td>{@link #OID_INT16}</td>
- * <td>java.lang.Integer</td>
- * <td>A signed integer within the range -32768 to 32767</td>
- * </tr>
- * <tr>
- * <td>{@link #INT32}</td>
- * <td>Int32</td>
- * <td>{@link #OID_INT32}</td>
- * <td>java.lang.Integer</td>
- * <td>A signed integer within the range -2147483648 to 2147483647</td>
- * </tr>
- * <tr>
- * <td>{@link #INT64}</td>
- * <td>Int64</td>
- * <td>{@link #OID_INT64}</td>
- * <td>java.lang.Long</td>
- * <td>A signed integer within the range -9223372036854775808 to 9223372036854775807</td>
- * </tr>
- * <tr>
- * <td>{@link #LANGUAGE}</td>
- * <td>Language</td>
- * <td>{@link #OID_LANGUAGE}</td>
- * <td>java.util.Locale</td>
- * <td>A language tag as defined by IETF BCP 47</td>
- * </tr>
- * <tr>
- * <td>{@link #MEDIA_TYPE}</td>
- * <td>MediaType</td>
- * <td>{@link #OID_MEDIA_TYPE}</td>
- * <td>com.optimasc.lang.MediaType</td>
- * <td>An Internet media type as defined by IETF RFC 6838</td>
- * </tr>
- * <tr>
- * <td>{@link #NCNAME}</td>
- * <td>NCName</td>
- * <td>{@link #OID_NCNAME}</td>
- * <td>java.lang.String</td>
- * <td>An identifier that is a subset of the XML NCName</td>
- * </tr>
- * <tr>
- * <td>{@link #NORMALIZED_STRING}</td>
- * <td>NormalizedString</td>
- * <td>{@link #OID_NORMALIZED_STRING}</td>
- * <td>java.lang.String</td>
- * <td>A whitespace-normalized Unicode string</td>
- * </tr>
- * <tr>
- * <td>{@link #OPENDATE}</td>
- * <td>OpenDate</td>
- * <td>{@link #OID_OPENDATE}</td>
- * <td>com.optimasc.lang.GregorianDatetimeCalendar</td>
- * <td>A date with year, month or day precision, or a date and time with timezone, with a year from 1582 to 9999</td>
- * </tr>
- * <tr>
- * <td>{@link #PERCENTAGE}</td>
- * <td>Percentage</td>
- * <td>{@link #OID_PERCENTAGE}</td>
- * <td>java.lang.Integer</td>
- * <td>An integer within the range 0 to 100</td>
- * </tr>
- * <tr>
- * <td>{@link #QUALIFIED_NAME}</td>
- * <td>QualifiedName</td>
- * <td>{@link #OID_QUALIFIED_NAME}</td>
- * <td>java.lang.String</td>
- * <td>An identifier using namespaces, that is a subset of the XML QName</td>
- * </tr>
- * <tr>
- * <td>{@link #REAL}</td>
- * <td>Real</td>
- * <td>{@link #OID_REAL}</td>
- * <td>java.lang.Double</td>
- * <td>A real number, which is rounded to double precision</td>
- * </tr>
- * <tr>
- * <td>{@link #TEXT}</td>
- * <td>Text</td>
- * <td>{@link #OID_TEXT}</td>
- * <td>java.lang.String</td>
- * <td>A Unicode string with a restricted character repertoire</td>
- * </tr>
- * <tr>
- * <td>{@link #TOKEN}</td>
- * <td>Token</td>
- * <td>{@link #OID_TOKEN}</td>
- * <td>java.lang.String</td>
- * <td>A whitespace-normalized Unicode string with no leading, trailing or consecutive spaces</td>
- * </tr>
- * <tr>
- * <td>{@link #TIME_OF_DAY}</td>
- * <td>TimeOfDay</td>
- * <td>{@link #OID_TIME_OF_DAY}</td>
- * <td>com.optimasc.lang.GregorianDatetimeCalendar</td>
- * <td>A local time of day with second precision and no timezone</td>
- * </tr>
- * <tr>
- * <td>{@link #TIME_OF_DAY_TZ}</td>
- * <td>TimeOfDayWithTimezone</td>
- * <td>{@link #OID_TIME_OF_DAY_TZ}</td>
- * <td>com.optimasc.lang.GregorianDatetimeCalendar</td>
- * <td>A time of day with second precision and timezone</td>
- * </tr>
- * <tr>
- * <td>{@link #UINT8}</td>
- * <td>UInt8</td>
- * <td>{@link #OID_UINT8}</td>
- * <td>java.lang.Integer</td>
- * <td>An unsigned integer within the range 0 to 255</td>
- * </tr>
- * <tr>
- * <td>{@link #UINT16}</td>
- * <td>UInt16</td>
- * <td>{@link #OID_UINT16}</td>
- * <td>java.lang.Integer</td>
- * <td>An unsigned integer within the range 0 to 65535</td>
- * </tr>
- * <tr>
- * <td>{@link #UINT32}</td>
- * <td>UInt32</td>
- * <td>{@link #OID_UINT32}</td>
- * <td>java.lang.Long</td>
- * <td>An unsigned integer within the range 0 to 4294967295</td>
- * </tr>
- * <tr>
- * <td>{@link #UINT64}</td>
- * <td>UInt64</td>
- * <td>{@link #OID_UINT64}</td>
- * <td>java.math.BigInteger</td>
- * <td>An unsigned integer within the range 0 to 18446744073709551615</td>
- * </tr>
- * <tr>
- * <td>{@link #URI}</td>
- * <td>URI</td>
- * <td>{@link #OID_URI}</td>
- * <td>java.net.URI</td>
- * <td>A Uniform Resource Identifier as defined by IETF RFC 3986</td>
+ * <td>DURATION</td>
+ * <td><code>javax.xml.datatype.Duration</code></td>
+ * <td>A duration with a month component and a day-time component, with millisecond precision</td>
  * </tr>
  * <tr>
  * <td>{@link #VISIBLE_STRING}</td>
  * <td>VisibleString</td>
  * <td>{@link #OID_VISIBLE_STRING}</td>
- * <td>java.lang.String</td>
- * <td>A string of printable ASCII characters (U+0020 to U+007E)</td>
+ * <td>VisibleString</td>
+ * <td><code>java.lang.String</code></td>
+ * <td>A string of visible ASCII characters (U+0020 to U+007E)</td>
  * </tr>
  * <tr>
- * <td>{@link #JAVA_CLASS}</td>
- * <td>javaClass</td>
- * <td></td>
- * <td>java.lang.Class</td>
- * <td>A java class representation</td>
+ * <td>{@link #REAL}</td>
+ * <td>Real</td>
+ * <td>{@link #OID_REAL}</td>
+ * <td>REAL</td>
+ * <td><code>java.lang.Double</code></td>
+ * <td>A real number, rounded to double precision</td>
+ * </tr>
+ * <tr>
+ * <td>{@link #TIME_OF_DAY}</td>
+ * <td>TimeOfDay</td>
+ * <td>{@link #OID_TIME_OF_DAY}</td>
+ * <td>TIME-OF-DAY</td>
+ * <td><code>com.optimasc.lang.GregorianDatetimeCalendar</code></td>
+ * <td>A local time of day with second precision and no timezone</td>
  * </tr>
  * </table>
- * 
- *  <h2>Lookup</h2>
- *  <p>Each type in this catalog has two stable identifiers: its expanded
- *  name, exposed as a {@code NAME_*} constant, and its OID, exposed
- *  as an {@code OID_*} constant. Either may be passed to
- *  {@link Schema#getTypeDefinition(String)} to retrieve the type. The sole
- *  exception is {@link #JAVA_CLASS}, which has no OID and can be
- *  retrieved only by its name {@code "javaClass"}. These types have no
- *  namespace, so their expanded name is their local name.</p>
  *
- *  <p>The XMLSchema 1.1 types ({@code XSD_*} constants) have no OID. Their
- *  expanded name is {@link #XSD_NAMESPACE_URI} followed by their local name,
- *  exposed as an {@code XSD_NAME_*} constant.</p>
- * 
- * */
+ * <h2>Lookup</h2>
+ * <p>Each type in this catalog has two stable identifiers: its expanded
+ * name, exposed as a {@code NAME_*} constant, and its OID, exposed
+ * as an {@code OID_*} constant. Either may be passed to
+ * {@link Schema#getTypeDefinition(String)} on {@link StandardSchema} to
+ * retrieve the type. The sole exception is {@link #JAVA_CLASS}, which has no
+ * OID and can be retrieved only by its name {@code "javaClass"}. These types
+ * have no namespace, so their expanded name is their local name.</p>
+ *
+ * @see ExtendedTypes
+ * @see XMLSchemaTypes
+ * @see StandardSchema
+ */
 public class StandardTypes
 {
   /** Object Identifier for syntax of an LDAP BOOLEAN */
@@ -366,7 +227,7 @@ public class StandardTypes
 
   /** Object Identifier for syntax of an OBJECT IDENTIFIER */
   public static final String OID_OBJECT_IDENTIFIER = "1.3.6.1.4.1.1466.115.121.1.38";
-  public static final String NAME_OBJECT_IDENTIFIER = "OBJECT IDENTIFIER";
+  public static final String NAME_OBJECT_IDENTIFIER = "objectIdentifier";
   
   /** Type definition for OBJECT IDENTIFIER type. */
   public static final EntityTypeDefinition OBJECT_IDENTIFIER =
@@ -376,7 +237,7 @@ public class StandardTypes
 
   /** Object Identifier for syntax of an array of bytes / OCTET STRING */
   public static final String OID_OCTET_STRING = "1.3.6.1.4.1.1466.115.121.1.40";
-  public static final String NAME_BINARY = "OCTET STRING";
+  public static final String NAME_OCTET_STRING = "BINARY";
   /**
    * Type definition for an OCTET STRING type. This is a generic type
    * representing binary data. This is represented by a <code>byte[]</code>
@@ -385,7 +246,7 @@ public class StandardTypes
   public static final EntityTypeDefinition OCTET_STRING =
   /* OID, NamespaceURI, name, Description, Class, formatter, allowedValues */
   new DefaultTypeDefinition(OID_OCTET_STRING, 
-      null, NAME_BINARY,
+      null, NAME_OCTET_STRING,
       "OCTET STRING", new BinaryType(),null);
 
   /** Object Identifier for syntax of a class type */

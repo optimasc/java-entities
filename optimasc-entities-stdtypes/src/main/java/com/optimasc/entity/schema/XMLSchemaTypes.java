@@ -33,9 +33,213 @@ import com.optimasc.text.StandardFormatters;
 import omg.org.astm.type.UnnamedTypeReference;
 
 /**
- * XMLSchema 1.1 datatype definitions subset. This includes and defines the 
- * most important and minimum type definitions that can be useful.
- */ 
+ * XML Schema 1.1 type definitions: a subset of the built-in datatypes of W3C
+ * XML Schema Definition Language (XSD) 1.1 Part 2.
+ *
+ * <p>
+ * These type definitions are not registered in {@link StandardSchema}, so
+ * that they are only loaded when used: they should be registered if
+ * needed.
+ * </p>
+ *
+ * <table>
+ * <caption>XML Schema 1.1 type definitions</caption>
+ * <tr>
+ * <th>Java Name</th>
+ * <th>Local Name</th>
+ * <th>Java Object representation</th>
+ * <th>Description</th>
+ * </tr>
+ * <tr>
+ * <td>{@link #XSD_BOOLEAN}</td>
+ * <td>{@link #XSD_NAME_BOOLEAN}: <code>boolean</code></td>
+ * <td><code>java.lang.Boolean</code></td>
+ * <td>A boolean value</td>
+ * </tr>
+ * <tr>
+ * <td>{@link #XSD_BASE64BINARY}</td>
+ * <td>{@link #XSD_NAME_BASE64}: <code>base64Binary</code></td>
+ * <td><code>byte[]</code></td>
+ * <td>Binary data, represented in Base64</td>
+ * </tr>
+ * <tr>
+ * <td>{@link #XSD_HEXBINARY}</td>
+ * <td>{@link #XSD_NAME_HEXBINARY}: <code>hexBinary</code></td>
+ * <td><code>byte[]</code></td>
+ * <td>Binary data, represented in hexadecimal</td>
+ * </tr>
+ * <tr>
+ * <td>{@link #XSD_LANGUAGE}</td>
+ * <td>{@link #XSD_NAME_LANGUAGE}: <code>language</code></td>
+ * <td><code>java.util.Locale</code></td>
+ * <td>A language tag as defined by IETF BCP 47</td>
+ * </tr>
+ * <tr>
+ * <td>{@link #XSD_TIMESTAMP}</td>
+ * <td>{@link #XSD_NAME_TIMESTAMP}: <code>dateTimeStamp</code></td>
+ * <td><code>com.optimasc.lang.GregorianDatetimeCalendar</code></td>
+ * <td>A date and time with millisecond precision and a mandatory timezone</td>
+ * </tr>
+ * <tr>
+ * <td>{@link #XSD_DATE}</td>
+ * <td>{@link #XSD_NAME_DATE}: <code>date</code></td>
+ * <td><code>com.optimasc.lang.GregorianDatetimeCalendar</code></td>
+ * <td>A date</td>
+ * </tr>
+ * <tr>
+ * <td>{@link #XSD_YEAR}</td>
+ * <td>{@link #XSD_NAME_YEAR}: <code>gYear</code></td>
+ * <td><code>com.optimasc.lang.GregorianDatetimeCalendar</code></td>
+ * <td>A Gregorian year</td>
+ * </tr>
+ * <tr>
+ * <td>{@link #XSD_DECIMAL}</td>
+ * <td>{@link #XSD_NAME_DECIMAL}: <code>decimal</code></td>
+ * <td><code>java.math.BigDecimal</code></td>
+ * <td>A decimal number of unlimited precision</td>
+ * </tr>
+ * <tr>
+ * <td>{@link #XSD_INTEGER}</td>
+ * <td>{@link #XSD_NAME_INTEGER}: <code>integer</code></td>
+ * <td><code>java.math.BigInteger</code></td>
+ * <td>An integer value of unlimited range</td>
+ * </tr>
+ * <tr>
+ * <td>{@link #XSD_INT8}</td>
+ * <td>{@link #XSD_NAME_INT8}: <code>byte</code></td>
+ * <td><code>java.lang.Integer</code></td>
+ * <td>A signed integer within the range -128 to 127</td>
+ * </tr>
+ * <tr>
+ * <td>{@link #XSD_INT16}</td>
+ * <td>{@link #XSD_NAME_INT16}: <code>short</code></td>
+ * <td><code>java.lang.Integer</code></td>
+ * <td>A signed integer within the range -32768 to 32767</td>
+ * </tr>
+ * <tr>
+ * <td>{@link #XSD_INT}</td>
+ * <td>{@link #XSD_NAME_INT}: <code>int</code></td>
+ * <td><code>java.lang.Integer</code></td>
+ * <td>A signed integer within the range -2147483648 to 2147483647</td>
+ * </tr>
+ * <tr>
+ * <td>{@link #XSD_LONG}</td>
+ * <td>{@link #XSD_NAME_LONG}: <code>long</code></td>
+ * <td><code>java.lang.Long</code></td>
+ * <td>A signed integer within the range -9223372036854775808 to 9223372036854775807</td>
+ * </tr>
+ * <tr>
+ * <td>{@link #XSD_UINT8}</td>
+ * <td>{@link #XSD_NAME_UINT8}: <code>unsignedByte</code></td>
+ * <td><code>java.lang.Integer</code></td>
+ * <td>An unsigned integer within the range 0 to 255</td>
+ * </tr>
+ * <tr>
+ * <td>{@link #XSD_UINT16}</td>
+ * <td>{@link #XSD_NAME_UINT16}: <code>unsignedShort</code></td>
+ * <td><code>java.lang.Integer</code></td>
+ * <td>An unsigned integer within the range 0 to 65535</td>
+ * </tr>
+ * <tr>
+ * <td>{@link #XSD_UINT32}</td>
+ * <td>{@link #XSD_NAME_UINT32}: <code>unsignedInt</code></td>
+ * <td><code>java.lang.Long</code></td>
+ * <td>An unsigned integer within the range 0 to 4294967295</td>
+ * </tr>
+ * <tr>
+ * <td>{@link #XSD_NON_NEGATIVE_INTEGER}</td>
+ * <td>{@link #XSD_NAME_NON_NEGATIVE_INTEGER}: <code>nonNegativeInteger</code></td>
+ * <td><code>java.math.BigInteger</code></td>
+ * <td>A non-negative integer of unlimited range</td>
+ * </tr>
+ * <tr>
+ * <td>{@link #XSD_FLOAT}</td>
+ * <td>{@link #XSD_NAME_FLOAT}: <code>float</code></td>
+ * <td><code>java.lang.Float</code></td>
+ * <td>An IEEE 754 single precision floating point value</td>
+ * </tr>
+ * <tr>
+ * <td>{@link #XSD_DOUBLE}</td>
+ * <td>{@link #XSD_NAME_DOUBLE}: <code>double</code></td>
+ * <td><code>java.lang.Double</code></td>
+ * <td>An IEEE 754 double precision floating point value</td>
+ * </tr>
+ * <tr>
+ * <td>{@link #XSD_STRING}</td>
+ * <td>{@link #XSD_NAME_STRING}: <code>string</code></td>
+ * <td><code>java.lang.String</code></td>
+ * <td>A string of XML characters</td>
+ * </tr>
+ * <tr>
+ * <td>{@link #XSD_NORMALIZED_STRING}</td>
+ * <td>{@link #XSD_NAME_NORMALIZED_STRING}: <code>normalizedString</code></td>
+ * <td><code>java.lang.String</code></td>
+ * <td>A string of XML characters with no TAB, LF or CR</td>
+ * </tr>
+ * <tr>
+ * <td>{@link #XSD_TOKEN}</td>
+ * <td>{@link #XSD_NAME_TOKEN}: <code>token</code></td>
+ * <td><code>java.lang.String</code></td>
+ * <td>A normalized string with no leading, trailing or consecutive spaces</td>
+ * </tr>
+ * <tr>
+ * <td>{@link #XSD_UINT64}</td>
+ * <td>{@link #XSD_NAME_UINT64}: <code>unsignedLong</code></td>
+ * <td><code>java.math.BigInteger</code></td>
+ * <td>An unsigned integer within the range 0 to 18446744073709551615</td>
+ * </tr>
+ * <tr>
+ * <td>{@link #XSD_ANYURI}</td>
+ * <td>{@link #XSD_NAME_ANYURI}: <code>anyURI</code></td>
+ * <td><code>java.net.URI</code></td>
+ * <td>A URI reference as defined by IETF RFC 3986</td>
+ * </tr>
+ * <tr>
+ * <td>{@link #XSD_DATETIME}</td>
+ * <td>{@link #XSD_NAME_DATETIME}: <code>dateTime</code></td>
+ * <td><code>com.optimasc.lang.GregorianDatetimeCalendar</code></td>
+ * <td>A date and local time with second precision and no timezone</td>
+ * </tr>
+ * <tr>
+ * <td>{@link #XSD_TIME}</td>
+ * <td>{@link #XSD_NAME_TIME}: <code>time</code></td>
+ * <td><code>com.optimasc.lang.GregorianDatetimeCalendar</code></td>
+ * <td>A local time of day with second precision and no timezone</td>
+ * </tr>
+ * <tr>
+ * <td>{@link #XSD_DURATION}</td>
+ * <td>{@link #XSD_NAME_DURATION}: <code>duration</code></td>
+ * <td><code>javax.xml.datatype.Duration</code></td>
+ * <td>A non-negative duration with a month component and a day-time component, with millisecond precision</td>
+ * </tr>
+ * <tr>
+ * <td>{@link #XSD_NAME}</td>
+ * <td>{@link #XSD_NAME_NAME}: <code>Name</code></td>
+ * <td><code>java.lang.String</code></td>
+ * <td>An XML name</td>
+ * </tr>
+ * <tr>
+ * <td>{@link #XSD_NCNAME}</td>
+ * <td>{@link #XSD_NAME_NCNAME}: <code>NCName</code></td>
+ * <td><code>java.lang.String</code></td>
+ * <td>An XML non-colonized name</td>
+ * </tr>
+ * <tr>
+ * <td>{@link #XSD_NMTOKEN}</td>
+ * <td>{@link #XSD_NAME_NMTOKEN}: <code>NMTOKEN</code></td>
+ * <td><code>java.lang.String</code></td>
+ * <td>An XML name token</td>
+ * </tr>
+ * </table>
+ *
+ * <h2>Identifiers</h2>
+ * <p>These types have no OID. Their expanded name is
+ * {@link #XSD_NAMESPACE_URI} followed by their local name, which is exposed
+ * as an {@code XSD_NAME_*} constant.</p>
+ *
+ * @see StandardTypes
+ * @see ExtendedTypes
+ */
 public class XMLSchemaTypes
 {
   
