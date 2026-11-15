@@ -19,11 +19,11 @@ import com.optimasc.datatypes.defined.UnsignedByteType;
 import com.optimasc.datatypes.defined.UnsignedIntType;
 import com.optimasc.datatypes.defined.UnsignedLongType;
 import com.optimasc.datatypes.defined.UnsignedShortType;
-import com.optimasc.datatypes.defined.VisibleCharType;
 import com.optimasc.datatypes.defined.YearType;
 import com.optimasc.datatypes.derived.UnicodeCharType;
 import com.optimasc.datatypes.generated.LanguageType;
 import com.optimasc.datatypes.primitives.BooleanType;
+import com.optimasc.datatypes.primitives.CalendarDurationType;
 import com.optimasc.datatypes.primitives.DateTimeType;
 import com.optimasc.datatypes.primitives.DecimalType;
 import com.optimasc.datatypes.primitives.IntegralType;
@@ -33,6 +33,7 @@ import com.optimasc.datatypes.primitives.URIType;
 import com.optimasc.text.NumericFormatters;
 import com.optimasc.text.StandardDateFormatters;
 import com.optimasc.text.StandardFormatters;
+import com.optimasc.text.XSDCalendarDurationConverter;
 
 import omg.org.astm.type.TypeReference;
 import omg.org.astm.type.UnnamedTypeReference;
@@ -507,16 +508,14 @@ public class StandardTypes
 
   public static final String XSD_NAME_DURATION = "duration";
   /**
-   * Type definition for XMLSchema duration type. The Duration category is
-   * left unmapped in this binding (Schema Value Representation Specification,
-   * Section 8.2): a duration type is represented by a
-   * <code>java.lang.String</code> java object holding the canonical lexical
-   * form. Negative durations are rejected.
+   * Type definition for XMLSchema duration type. A duration type is represented by a
+   * <code>javax.xml.datatype.Duration</code> java object. Negative durations are
+   * rejected.
    */
   public static final EntityTypeDefinition XSD_DURATION =
   /* OID, NamespaceURI, name, Description, datatype */
     new DefaultTypeDefinition(null, XSD_NAMESPACE_URI,
-          XSD_NAME_DURATION, "XMLSchema duration", new StringType(new UnnamedTypeReference(new VisibleCharType())), StandardDateFormatters.XSDDurationConverter.getInstance());
+          XSD_NAME_DURATION, "XMLSchema duration", new CalendarDurationType(), XSDCalendarDurationConverter.getInstance());
 
 
   public static final String XSD_NAME_NAME = "Name";
