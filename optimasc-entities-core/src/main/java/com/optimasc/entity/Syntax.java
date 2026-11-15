@@ -124,10 +124,10 @@ public final class Syntax
           throw new ParseException(
               "Identifier contains a prohibited character (General category 'Zp') at position",
               i);
-        case Character.SPACE_SEPARATOR:
+/*        case Character.SPACE_SEPARATOR:
           throw new ParseException(
               "Identifier contains a prohibited character (General category 'Zs') at position",
-              i);
+              i);*/
         case Character.CONTROL:
           throw new ParseException(
               "Identifier contains a prohibited character (General category 'Cc') at position",
