@@ -253,8 +253,8 @@ public class XMLSchemaTypes
    */
   public static final EntityTypeDefinition XSD_BOOLEAN =
   /* OID, NamespaceURI, name, Description, datatype */
-    new DefaultTypeDefinition(null, XSD_NAMESPACE_URI,
-          XSD_NAME_BOOLEAN, "XMLSchema boolean", new BooleanType(), StandardFormatters.XSDBooleanConverter.getInstance());
+    DefaultDefinition.shared(new DefaultTypeDefinition(null, XSD_NAMESPACE_URI,
+          XSD_NAME_BOOLEAN, "XMLSchema boolean", new BooleanType(), StandardFormatters.XSDBooleanConverter.getInstance()));
   
   
   public static final String XSD_NAME_BASE64 = "base64Binary";
@@ -264,8 +264,8 @@ public class XMLSchemaTypes
    */
   public static final EntityTypeDefinition XSD_BASE64BINARY =
   /* OID, NamespaceURI, name, Description, datatype */
-    new DefaultTypeDefinition(null, XSD_NAMESPACE_URI,
-          XSD_NAME_BASE64, "XMLSchema base64Binary", new BinaryType(), StandardFormatters.XSDBase64BinaryConverter.getInstance());
+    DefaultDefinition.shared(new DefaultTypeDefinition(null, XSD_NAMESPACE_URI,
+          XSD_NAME_BASE64, "XMLSchema base64Binary", new BinaryType(), StandardFormatters.XSDBase64BinaryConverter.getInstance()));
   
   public static final String XSD_NAME_HEXBINARY = "hexBinary";
   /**
@@ -274,8 +274,8 @@ public class XMLSchemaTypes
    */
   public static final EntityTypeDefinition XSD_HEXBINARY =
   /* OID, NamespaceURI, name, Description, datatype */
-    new DefaultTypeDefinition(null, XSD_NAMESPACE_URI,
-          XSD_NAME_HEXBINARY, "XMLSchema hexBinary", new BinaryType(), StandardFormatters.XSDHexBinaryConverter.getInstance());
+    DefaultDefinition.shared(new DefaultTypeDefinition(null, XSD_NAMESPACE_URI,
+          XSD_NAME_HEXBINARY, "XMLSchema hexBinary", new BinaryType(), StandardFormatters.XSDHexBinaryConverter.getInstance()));
   
   
   public static final String XSD_NAME_LANGUAGE = "language";
@@ -285,8 +285,8 @@ public class XMLSchemaTypes
    */
   public static final EntityTypeDefinition XSD_LANGUAGE =
   /* OID, NamespaceURI, name, Description, datatype */
-    new DefaultTypeDefinition(null, XSD_NAMESPACE_URI,
-          XSD_NAME_LANGUAGE, "XMLSchema language", new LanguageType(), StandardFormatters.LocaleTypeConverter.getInstance());
+    DefaultDefinition.shared(new DefaultTypeDefinition(null, XSD_NAMESPACE_URI,
+          XSD_NAME_LANGUAGE, "XMLSchema language", new LanguageType(), StandardFormatters.LocaleTypeConverter.getInstance()));
   
   
   public static final String XSD_NAME_TIMESTAMP = "dateTimeStamp";
@@ -296,8 +296,8 @@ public class XMLSchemaTypes
    */
   public static final EntityTypeDefinition XSD_TIMESTAMP =
   /* OID, NamespaceURI, name, Description, datatype */
-    new DefaultTypeDefinition(null, XSD_NAMESPACE_URI,
-          XSD_NAME_TIMESTAMP, "XMLSchema dateTimeStamp", new DateTimeType(DateTime.TimeAccuracy.MILLISECOND, false), StandardDateFormatters.XSDDateTimeStampConverter.getInstance());
+    DefaultDefinition.shared(new DefaultTypeDefinition(null, XSD_NAMESPACE_URI,
+          XSD_NAME_TIMESTAMP, "XMLSchema dateTimeStamp", new DateTimeType(DateTime.TimeAccuracy.MILLISECOND, false), StandardDateFormatters.XSDDateTimeStampConverter.getInstance()));
   
   public static final String XSD_NAME_DATE = "date";
   /**
@@ -306,8 +306,8 @@ public class XMLSchemaTypes
    */
   public static final EntityTypeDefinition XSD_DATE =
   /* OID, NamespaceURI, name, Description, datatype */
-    new DefaultTypeDefinition(null, XSD_NAMESPACE_URI,
-          XSD_NAME_DATE, "XMLSchema date", new DateType(), StandardDateFormatters.XSDDateConverter.getInstance());
+    DefaultDefinition.shared(new DefaultTypeDefinition(null, XSD_NAMESPACE_URI,
+          XSD_NAME_DATE, "XMLSchema date", new DateType(), StandardDateFormatters.XSDDateConverter.getInstance()));
   
   
   public static final String XSD_NAME_YEAR = "gYear";
@@ -318,8 +318,8 @@ public class XMLSchemaTypes
    */
   public static final EntityTypeDefinition XSD_YEAR =
   /* OID, NamespaceURI, name, Description, datatype */
-    new DefaultTypeDefinition(null, XSD_NAMESPACE_URI,
-        XSD_NAME_YEAR, "XMLSchema gYear", new YearType(), StandardDateFormatters.XSDGYearConverter.getInstance());
+    DefaultDefinition.shared(new DefaultTypeDefinition(null, XSD_NAMESPACE_URI,
+        XSD_NAME_YEAR, "XMLSchema gYear", new YearType(), StandardDateFormatters.XSDGYearConverter.getInstance()));
   
   
   
@@ -330,8 +330,8 @@ public class XMLSchemaTypes
    */
   public static final EntityTypeDefinition XSD_DECIMAL =
   /* OID, NamespaceURI, name, Description, datatype */
-    new DefaultTypeDefinition(null, XSD_NAMESPACE_URI,
-          XSD_NAME_DECIMAL, "XMLSchema decimal", new DecimalType(), NumericFormatters.XSDDecimalConverter.getInstance());
+    DefaultDefinition.shared(new DefaultTypeDefinition(null, XSD_NAMESPACE_URI,
+          XSD_NAME_DECIMAL, "XMLSchema decimal", new DecimalType(), NumericFormatters.XSDDecimalConverter.getInstance()));
 
   public static final String XSD_NAME_INTEGER = "integer";
   /**
@@ -340,8 +340,8 @@ public class XMLSchemaTypes
    */
   public static final EntityTypeDefinition XSD_INTEGER =
   /* OID, NamespaceURI, name, Description, datatype */
-    new DefaultTypeDefinition(null, XSD_NAMESPACE_URI,
-          XSD_NAME_INTEGER, "XMLSchema integer", new IntegralType(), NumericFormatters.XSDIntegerConverter.getInstance());
+    DefaultDefinition.shared(new DefaultTypeDefinition(null, XSD_NAMESPACE_URI,
+          XSD_NAME_INTEGER, "XMLSchema integer", new IntegralType(), NumericFormatters.XSDIntegerConverter.getInstance()));
   
   
   public static final String XSD_NAME_INT8 = "byte";
@@ -351,8 +351,8 @@ public class XMLSchemaTypes
    */
   public static final EntityTypeDefinition XSD_INT8 =
   /* OID, NamespaceURI, name, Description, datatype */
-    new DefaultTypeDefinition(null, XSD_NAMESPACE_URI,
-          XSD_NAME_INT8, "XMLSchema byte", new ByteType(), NumericFormatters.XSDByteConverter.getInstance());
+    DefaultDefinition.shared(new DefaultTypeDefinition(null, XSD_NAMESPACE_URI,
+          XSD_NAME_INT8, "XMLSchema byte", new ByteType(), NumericFormatters.XSDByteConverter.getInstance()));
   
   
   public static final String XSD_NAME_INT16 = "short";
@@ -362,8 +362,8 @@ public class XMLSchemaTypes
    */
   public static final EntityTypeDefinition XSD_INT16 =
   /* OID, NamespaceURI, name, Description, datatype */
-    new DefaultTypeDefinition(null, XSD_NAMESPACE_URI,
-          XSD_NAME_INT16, "XMLSchema short", new ShortType(), NumericFormatters.XSDShortConverter.getInstance());
+    DefaultDefinition.shared(new DefaultTypeDefinition(null, XSD_NAMESPACE_URI,
+          XSD_NAME_INT16, "XMLSchema short", new ShortType(), NumericFormatters.XSDShortConverter.getInstance()));
   
   
   
@@ -374,8 +374,8 @@ public class XMLSchemaTypes
    */
   public static final EntityTypeDefinition XSD_INT =
   /* OID, NamespaceURI, name, Description, datatype */
-    new DefaultTypeDefinition(null, XSD_NAMESPACE_URI,
-          XSD_NAME_INT, "XMLSchema int", new IntType(), NumericFormatters.XSDIntConverter.getInstance());
+    DefaultDefinition.shared(new DefaultTypeDefinition(null, XSD_NAMESPACE_URI,
+          XSD_NAME_INT, "XMLSchema int", new IntType(), NumericFormatters.XSDIntConverter.getInstance()));
   
   public static final String XSD_NAME_LONG = "long";
   /**
@@ -384,8 +384,8 @@ public class XMLSchemaTypes
    */
   public static final EntityTypeDefinition XSD_LONG =
   /* OID, NamespaceURI, name, Description, datatype */
-    new DefaultTypeDefinition(null, XSD_NAMESPACE_URI,
-          XSD_NAME_LONG, "XMLSchema long", new LongType(), NumericFormatters.XSDLongConverter.getInstance());
+    DefaultDefinition.shared(new DefaultTypeDefinition(null, XSD_NAMESPACE_URI,
+          XSD_NAME_LONG, "XMLSchema long", new LongType(), NumericFormatters.XSDLongConverter.getInstance()));
   
   public static final String XSD_NAME_UINT8 = "unsignedByte";
   /**
@@ -394,8 +394,8 @@ public class XMLSchemaTypes
    */
   public static final EntityTypeDefinition XSD_UINT8 =
   /* OID, NamespaceURI, name, Description, datatype */
-    new DefaultTypeDefinition(null, XSD_NAMESPACE_URI,
-          XSD_NAME_UINT8, "XMLSchema unsignedByte", new UnsignedByteType(), NumericFormatters.XSDUnsignedByteConverter.getInstance());
+    DefaultDefinition.shared(new DefaultTypeDefinition(null, XSD_NAMESPACE_URI,
+          XSD_NAME_UINT8, "XMLSchema unsignedByte", new UnsignedByteType(), NumericFormatters.XSDUnsignedByteConverter.getInstance()));
   
   public static final String XSD_NAME_UINT16 = "unsignedShort";
   /**
@@ -404,8 +404,8 @@ public class XMLSchemaTypes
    */
   public static final EntityTypeDefinition XSD_UINT16 =
   /* OID, NamespaceURI, name, Description, datatype */
-    new DefaultTypeDefinition(null, XSD_NAMESPACE_URI,
-          XSD_NAME_UINT16, "XMLSchema unsignedShort", new UnsignedShortType(), NumericFormatters.XSDUnsignedShortConverter.getInstance());
+    DefaultDefinition.shared(new DefaultTypeDefinition(null, XSD_NAMESPACE_URI,
+          XSD_NAME_UINT16, "XMLSchema unsignedShort", new UnsignedShortType(), NumericFormatters.XSDUnsignedShortConverter.getInstance()));
 
   public static final String XSD_NAME_UINT32 = "unsignedInt";
   /**
@@ -414,8 +414,8 @@ public class XMLSchemaTypes
    */
   public static final EntityTypeDefinition XSD_UINT32 =
   /* OID, NamespaceURI, name, Description, datatype */
-    new DefaultTypeDefinition(null, XSD_NAMESPACE_URI,
-          XSD_NAME_UINT32, "XMLSchema unsignedInt", new UnsignedIntType(), NumericFormatters.XSDUnsignedIntConverter.getInstance());
+    DefaultDefinition.shared(new DefaultTypeDefinition(null, XSD_NAMESPACE_URI,
+          XSD_NAME_UINT32, "XMLSchema unsignedInt", new UnsignedIntType(), NumericFormatters.XSDUnsignedIntConverter.getInstance()));
   
   
   public static final String XSD_NAME_NON_NEGATIVE_INTEGER = "nonNegativeInteger";
@@ -426,8 +426,8 @@ public class XMLSchemaTypes
    */
   public static final EntityTypeDefinition XSD_NON_NEGATIVE_INTEGER =
   /* OID, NamespaceURI, name, Description, datatype */
-    new DefaultTypeDefinition(null, XSD_NAMESPACE_URI,
-        XSD_NAME_NON_NEGATIVE_INTEGER, "XMLSchema nonNegativeInteger", new NonNegativeIntegerType(), NumericFormatters.XSDNonNegativeIntegerConverter.getInstance());
+    DefaultDefinition.shared(new DefaultTypeDefinition(null, XSD_NAMESPACE_URI,
+        XSD_NAME_NON_NEGATIVE_INTEGER, "XMLSchema nonNegativeInteger", new NonNegativeIntegerType(), NumericFormatters.XSDNonNegativeIntegerConverter.getInstance()));
   
   
   public static final String XSD_NAME_FLOAT = "float";
@@ -437,8 +437,8 @@ public class XMLSchemaTypes
    */
   public static final EntityTypeDefinition XSD_FLOAT =
   /* OID, NamespaceURI, name, Description, datatype */
-    new DefaultTypeDefinition(null, XSD_NAMESPACE_URI,
-          XSD_NAME_FLOAT, "XMLSchema float", new SingleType(), NumericFormatters.XSDFloatConverter.getInstance());
+    DefaultDefinition.shared(new DefaultTypeDefinition(null, XSD_NAMESPACE_URI,
+          XSD_NAME_FLOAT, "XMLSchema float", new SingleType(), NumericFormatters.XSDFloatConverter.getInstance()));
   
   public static final String XSD_NAME_DOUBLE = "double";
   /**
@@ -447,8 +447,8 @@ public class XMLSchemaTypes
    */
   public static final EntityTypeDefinition XSD_DOUBLE =
   /* OID, NamespaceURI, name, Description, datatype */
-    new DefaultTypeDefinition(null, XSD_NAMESPACE_URI,
-          XSD_NAME_DOUBLE, "XMLSchema double", new DoubleType(), NumericFormatters.XSDDoubleConverter.getInstance());
+    DefaultDefinition.shared(new DefaultTypeDefinition(null, XSD_NAMESPACE_URI,
+          XSD_NAME_DOUBLE, "XMLSchema double", new DoubleType(), NumericFormatters.XSDDoubleConverter.getInstance()));
   
   
   public static final String XSD_NAME_STRING = "string";
@@ -458,8 +458,8 @@ public class XMLSchemaTypes
    */
   public static final EntityTypeDefinition XSD_STRING =
   /* OID, NamespaceURI, name, Description, datatype */
-    new DefaultTypeDefinition(null, XSD_NAMESPACE_URI,
-          XSD_NAME_STRING, "XMLSchema string", new StringType(new UnnamedTypeReference(new UnicodeCharType())), StandardFormatters.XSDStringConverter.getInstance());
+    DefaultDefinition.shared(new DefaultTypeDefinition(null, XSD_NAMESPACE_URI,
+          XSD_NAME_STRING, "XMLSchema string", new StringType(new UnnamedTypeReference(new UnicodeCharType())), StandardFormatters.XSDStringConverter.getInstance()));
   
   
   
@@ -472,8 +472,8 @@ public class XMLSchemaTypes
    */
   public static final EntityTypeDefinition XSD_NORMALIZED_STRING =
   /* OID, NamespaceURI, name, Description, datatype */
-    new DefaultTypeDefinition(null, XSD_NAMESPACE_URI,
-          XSD_NAME_NORMALIZED_STRING, "XMLSchema normalizedString", new StringType(new UnnamedTypeReference(new UnicodeCharType())), StandardFormatters.XSDNormalizedStringConverter.getInstance());
+    DefaultDefinition.shared(new DefaultTypeDefinition(null, XSD_NAMESPACE_URI,
+          XSD_NAME_NORMALIZED_STRING, "XMLSchema normalizedString", new StringType(new UnnamedTypeReference(new UnicodeCharType())), StandardFormatters.XSDNormalizedStringConverter.getInstance()));
   
   public static final String XSD_NAME_TOKEN = "token";
   /**
@@ -482,8 +482,8 @@ public class XMLSchemaTypes
    */
   public static final EntityTypeDefinition XSD_TOKEN =
   /* OID, NamespaceURI, name, Description, datatype */
-    new DefaultTypeDefinition(null, XSD_NAMESPACE_URI,
-          XSD_NAME_TOKEN, "XMLSchema token", new StringType(new UnnamedTypeReference(new UnicodeCharType())), StandardFormatters.XSDTokenConverter.getInstance());
+    DefaultDefinition.shared(new DefaultTypeDefinition(null, XSD_NAMESPACE_URI,
+          XSD_NAME_TOKEN, "XMLSchema token", new StringType(new UnnamedTypeReference(new UnicodeCharType())), StandardFormatters.XSDTokenConverter.getInstance()));
   
   
   public static final String XSD_NAME_UINT64 = "unsignedLong";
@@ -493,8 +493,8 @@ public class XMLSchemaTypes
    */
   public static final EntityTypeDefinition XSD_UINT64 =
   /* OID, NamespaceURI, name, Description, datatype */
-    new DefaultTypeDefinition(null, XSD_NAMESPACE_URI,
-          XSD_NAME_UINT64, "XMLSchema unsignedLong", new UnsignedLongType(), NumericFormatters.XSDUnsignedLongConverter.getInstance());
+    DefaultDefinition.shared(new DefaultTypeDefinition(null, XSD_NAMESPACE_URI,
+          XSD_NAME_UINT64, "XMLSchema unsignedLong", new UnsignedLongType(), NumericFormatters.XSDUnsignedLongConverter.getInstance()));
 
 
   public static final String XSD_NAME_ANYURI = "anyURI";
@@ -505,8 +505,8 @@ public class XMLSchemaTypes
    */
   public static final EntityTypeDefinition XSD_ANYURI =
   /* OID, NamespaceURI, name, Description, datatype */
-    new DefaultTypeDefinition(null, XSD_NAMESPACE_URI,
-          XSD_NAME_ANYURI, "XMLSchema anyURI", new URIType(), StandardFormatters.URIConverter.getInstance());
+    DefaultDefinition.shared(new DefaultTypeDefinition(null, XSD_NAMESPACE_URI,
+          XSD_NAME_ANYURI, "XMLSchema anyURI", new URIType(), StandardFormatters.URIConverter.getInstance()));
 
 
   public static final String XSD_NAME_DATETIME = "dateTime";
@@ -517,8 +517,8 @@ public class XMLSchemaTypes
    */
   public static final EntityTypeDefinition XSD_DATETIME =
   /* OID, NamespaceURI, name, Description, datatype */
-    new DefaultTypeDefinition(null, XSD_NAMESPACE_URI,
-          XSD_NAME_DATETIME, "XMLSchema dateTime", new DateTimeType(), StandardDateFormatters.XSDDateTimeConverter.getInstance());
+    DefaultDefinition.shared(new DefaultTypeDefinition(null, XSD_NAMESPACE_URI,
+          XSD_NAME_DATETIME, "XMLSchema dateTime", new DateTimeType(), StandardDateFormatters.XSDDateTimeConverter.getInstance()));
 
 
   public static final String XSD_NAME_TIME = "time";
@@ -529,8 +529,8 @@ public class XMLSchemaTypes
    */
   public static final EntityTypeDefinition XSD_TIME =
   /* OID, NamespaceURI, name, Description, datatype */
-    new DefaultTypeDefinition(null, XSD_NAMESPACE_URI,
-          XSD_NAME_TIME, "XMLSchema time", new TimeType(), StandardDateFormatters.XSDTimeConverter.getInstance());
+    DefaultDefinition.shared(new DefaultTypeDefinition(null, XSD_NAMESPACE_URI,
+          XSD_NAME_TIME, "XMLSchema time", new TimeType(), StandardDateFormatters.XSDTimeConverter.getInstance()));
 
 
   public static final String XSD_NAME_DURATION = "duration";
@@ -541,8 +541,8 @@ public class XMLSchemaTypes
    */
   public static final EntityTypeDefinition XSD_DURATION =
   /* OID, NamespaceURI, name, Description, datatype */
-    new DefaultTypeDefinition(null, XSD_NAMESPACE_URI,
-          XSD_NAME_DURATION, "XMLSchema duration", new CalendarDurationType(), CalendarDurationConverter.getInstance());
+    DefaultDefinition.shared(new DefaultTypeDefinition(null, XSD_NAMESPACE_URI,
+          XSD_NAME_DURATION, "XMLSchema duration", new CalendarDurationType(), CalendarDurationConverter.getInstance()));
 
 
   public static final String XSD_NAME_NAME = "Name";
@@ -552,8 +552,8 @@ public class XMLSchemaTypes
    */
   public static final EntityTypeDefinition XSD_NAME =
   /* OID, NamespaceURI, name, Description, datatype */
-    new DefaultTypeDefinition(null, XSD_NAMESPACE_URI,
-          XSD_NAME_NAME, "XMLSchema Name", new StringType(new UnnamedTypeReference(new UnicodeCharType())), StandardFormatters.XSDNameConverter.getInstance());
+    DefaultDefinition.shared(new DefaultTypeDefinition(null, XSD_NAMESPACE_URI,
+          XSD_NAME_NAME, "XMLSchema Name", new StringType(new UnnamedTypeReference(new UnicodeCharType())), StandardFormatters.XSDNameConverter.getInstance()));
 
 
   public static final String XSD_NAME_NCNAME = "NCName";
@@ -564,8 +564,8 @@ public class XMLSchemaTypes
    */
   public static final EntityTypeDefinition XSD_NCNAME =
   /* OID, NamespaceURI, name, Description, datatype */
-    new DefaultTypeDefinition(null, XSD_NAMESPACE_URI,
-          XSD_NAME_NCNAME, "XMLSchema NCName", new StringType(new UnnamedTypeReference(new UnicodeCharType())), StandardFormatters.XSDNCNameConverter.getInstance());
+    DefaultDefinition.shared(new DefaultTypeDefinition(null, XSD_NAMESPACE_URI,
+          XSD_NAME_NCNAME, "XMLSchema NCName", new StringType(new UnnamedTypeReference(new UnicodeCharType())), StandardFormatters.XSDNCNameConverter.getInstance()));
 
 
   public static final String XSD_NAME_NMTOKEN = "NMTOKEN";
@@ -575,8 +575,8 @@ public class XMLSchemaTypes
    */
   public static final EntityTypeDefinition XSD_NMTOKEN =
   /* OID, NamespaceURI, name, Description, datatype */
-    new DefaultTypeDefinition(null, XSD_NAMESPACE_URI,
-          XSD_NAME_NMTOKEN, "XMLSchema NMTOKEN", new StringType(new UnnamedTypeReference(new UnicodeCharType())), StandardFormatters.XSDNMTOKENConverter.getInstance());
+    DefaultDefinition.shared(new DefaultTypeDefinition(null, XSD_NAMESPACE_URI,
+          XSD_NAME_NMTOKEN, "XMLSchema NMTOKEN", new StringType(new UnnamedTypeReference(new UnicodeCharType())), StandardFormatters.XSDNMTOKENConverter.getInstance()));
 
 
 }

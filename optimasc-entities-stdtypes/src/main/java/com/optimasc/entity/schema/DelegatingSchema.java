@@ -8,7 +8,7 @@ import com.optimasc.schema.ItemDefinition;
  * a local miss, enabling a layered schema hierarchy (for example a
  * domain-specific schema layered over the global {@link StandardSchema}).
  *
- * <h3>Resolution rules</h3>
+ * <h2>Resolution rules</h2>
  * <p>The three single-result lookups - {@link #getItemDefinition(String)},
  * {@link #getTypeDefinition(String)}, and {@link #getClassDefinition(String)} -
  * are <strong>local-first</strong>: this schema's own definitions are consulted
@@ -19,7 +19,7 @@ import com.optimasc.schema.ItemDefinition;
  * returned, so a domain item may reference a standard syntax (resolved through
  * the parent) without that syntax being duplicated locally.</p>
  *
- * <h3>Iteration and tree view are local-only</h3>
+ * <h2>Iteration and tree view are local-only</h2>
  * <p>The collection accessors ({@link #getItemDefinitions()},
  * {@link #getTypeDefinitions()}, {@link #getClassDefinitions()}) and the
  * browsable entity tree exposed via {@link #getRoot()} reflect
@@ -30,7 +30,7 @@ import com.optimasc.schema.ItemDefinition;
  * schema in the chain - including the parent - as a distinct root rather than
  * relying on a single flattened iterator.</p>
  *
- * <h3>Registration and overriding</h3>
+ * <h2>Registration and overriding</h2>
  * <p>Registration uses the inherited {@link #add(com.optimasc.entity.Definition)}.
  * Note that the inherited duplicate check is <em>local only</em>: adding a
  * definition whose name or OID also exists in the parent succeeds and produces
@@ -38,7 +38,9 @@ import com.optimasc.schema.ItemDefinition;
  * lookup). No diagnostic is emitted for such shadowing - it is the supported
  * mechanism for domain specialization.</p>
  *
- * <p>This class is not synchronized against concurrent multithreaded access.</p>
+ * <p>Like {@link BasicSchema}, this class is thread-safe. A lookup that falls
+ * through to the parent is as thread-safe as the parent itself, which is the
+ * case for {@link StandardSchema} and any other {@link BasicSchema}.</p>
  *
  * @see BasicSchema
  * @see StandardSchema

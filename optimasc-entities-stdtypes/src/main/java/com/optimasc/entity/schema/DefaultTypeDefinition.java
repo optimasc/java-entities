@@ -131,6 +131,7 @@ public class DefaultTypeDefinition extends DefaultDefinition
   */
  protected void setDatatype(Datatype datatype)
  {
+   checkModifiable();
    if (datatype == null)
      throw new IllegalArgumentException("Datatype must not be null.");
    DefaultAttribute attr =
@@ -145,6 +146,7 @@ public class DefaultTypeDefinition extends DefaultDefinition
  */
 protected void setFormat(Format format)
 {
+  checkModifiable();
   DefaultAttribute attr =
       new DefaultAttribute(KEY_FORMAT, Format.class);
   attr.add(format);

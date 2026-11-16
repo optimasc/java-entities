@@ -217,8 +217,8 @@ public class ExtendedTypes
    */
   public static final EntityTypeDefinition FLOAT32 =
   /* OID, NamespaceURI, name, Description, datatype */
-    new DefaultTypeDefinition(OID_FLOAT32, null,
-          NAME_FLOAT32, "Float32", new SingleType(), NumericFormatters.Float32Converter.getInstance());
+    DefaultDefinition.shared(new DefaultTypeDefinition(OID_FLOAT32, null,
+          NAME_FLOAT32, "Float32", new SingleType(), NumericFormatters.Float32Converter.getInstance()));
   
   
   /** Object Identifier for syntax of a Float64 */
@@ -230,8 +230,8 @@ public class ExtendedTypes
    */
   public static final EntityTypeDefinition FLOAT64 =
   /* OID, NamespaceURI, name, Description, datatype */
-    new DefaultTypeDefinition(OID_FLOAT64, null,
-          NAME_FLOAT64, "Float64", new DoubleType(), NumericFormatters.Float64Converter.getInstance());
+    DefaultDefinition.shared(new DefaultTypeDefinition(OID_FLOAT64, null,
+          NAME_FLOAT64, "Float64", new DoubleType(), NumericFormatters.Float64Converter.getInstance()));
   
   
   /** Object Identifier for syntax of a Int8 */
@@ -243,8 +243,8 @@ public class ExtendedTypes
    */
   public static final EntityTypeDefinition INT8 =
   /* OID, NamespaceURI, name, Description, datatype */
-    new DefaultTypeDefinition(OID_INT8, null,
-          NAME_INT8, "Int8", new ByteType(), NumericFormatters.ByteConverter.getInstance());
+    DefaultDefinition.shared(new DefaultTypeDefinition(OID_INT8, null,
+          NAME_INT8, "Int8", new ByteType(), NumericFormatters.ByteConverter.getInstance()));
   
   
   /** Object Identifier for syntax of a Int16 */
@@ -256,8 +256,8 @@ public class ExtendedTypes
    */
   public static final EntityTypeDefinition INT16 =
   /* OID, NamespaceURI, name, Description, datatype */
-    new DefaultTypeDefinition(OID_INT16, null,
-          NAME_INT16, "Int16", new ShortType(), NumericFormatters.ShortConverter.getInstance());
+    DefaultDefinition.shared(new DefaultTypeDefinition(OID_INT16, null,
+          NAME_INT16, "Int16", new ShortType(), NumericFormatters.ShortConverter.getInstance()));
   
   
   /** Object Identifier for syntax of a Int32 */
@@ -269,8 +269,8 @@ public class ExtendedTypes
    */
   public static final EntityTypeDefinition INT32 =
   /* OID, NamespaceURI, name, Description, datatype */
-    new DefaultTypeDefinition(OID_INT32, null,
-          NAME_INT32, "Int32", new IntType(), NumericFormatters.IntConverter.getInstance());
+    DefaultDefinition.shared(new DefaultTypeDefinition(OID_INT32, null,
+          NAME_INT32, "Int32", new IntType(), NumericFormatters.IntConverter.getInstance()));
   
   
   /** Object Identifier for syntax of a Int64 */
@@ -282,8 +282,8 @@ public class ExtendedTypes
    */
   public static final EntityTypeDefinition INT64 =
   /* OID, NamespaceURI, name, Description, datatype */
-    new DefaultTypeDefinition(OID_INT64, null,
-          NAME_INT64, "Int64", new LongType(), NumericFormatters.LongConverter.getInstance());
+    DefaultDefinition.shared(new DefaultTypeDefinition(OID_INT64, null,
+          NAME_INT64, "Int64", new LongType(), NumericFormatters.LongConverter.getInstance()));
   
   
   /** Object Identifier for syntax of a Language */
@@ -295,8 +295,8 @@ public class ExtendedTypes
    */
   public static final EntityTypeDefinition LANGUAGE =
   /* OID, NamespaceURI, name, Description, datatype */
-    new DefaultTypeDefinition(OID_LANGUAGE, null,
-          NAME_LANGUAGE, "Language", new LanguageType(), StandardFormatters.LocaleTypeConverter.getInstance());
+    DefaultDefinition.shared(new DefaultTypeDefinition(OID_LANGUAGE, null,
+          NAME_LANGUAGE, "Language", new LanguageType(), StandardFormatters.LocaleTypeConverter.getInstance()));
   
   
   /** Object Identifier for syntax of a Media Type */
@@ -308,8 +308,8 @@ public class ExtendedTypes
    */
   public static final EntityTypeDefinition MEDIA_TYPE =
   /* OID, NamespaceURI, name, Description, datatype */
-    new DefaultTypeDefinition(OID_MEDIA_TYPE, null,
-          NAME_MEDIA_TYPE, "Media Type", new MediaTypeType(), StandardFormatters.MediaTypeConverter.getInstance());
+    DefaultDefinition.shared(new DefaultTypeDefinition(OID_MEDIA_TYPE, null,
+          NAME_MEDIA_TYPE, "Media Type", new MediaTypeType(), StandardFormatters.MediaTypeConverter.getInstance()));
   
   
   /** Object Identifier for syntax of a NCName */
@@ -321,8 +321,8 @@ public class ExtendedTypes
    */
   public static final EntityTypeDefinition NCNAME =
   /* OID, NamespaceURI, name, Description, datatype */
-    new DefaultTypeDefinition(OID_NCNAME, null,
-          NAME_NCNAME, "NCName", new StringType(new UnnamedTypeReference(new UnicodeCharType())), StandardFormatters.NCNameConverter.getInstance());
+    DefaultDefinition.shared(new DefaultTypeDefinition(OID_NCNAME, null,
+          NAME_NCNAME, "NCName", new StringType(new UnnamedTypeReference(new UnicodeCharType())), StandardFormatters.NCNameConverter.getInstance()));
   
   
   /** Object Identifier for syntax of a Normalized String */
@@ -334,8 +334,8 @@ public class ExtendedTypes
    */
   public static final EntityTypeDefinition NORMALIZED_STRING =
   /* OID, NamespaceURI, name, Description, datatype */
-    new DefaultTypeDefinition(OID_NORMALIZED_STRING, null,
-          NAME_NORMALIZED_STRING, "Normalized String", new StringType(new UnnamedTypeReference(new UnicodeCharType())), StandardFormatters.NormalizedStringConverter.getInstance());
+    DefaultDefinition.shared(new DefaultTypeDefinition(OID_NORMALIZED_STRING, null,
+          NAME_NORMALIZED_STRING, "Normalized String", new StringType(new UnnamedTypeReference(new UnicodeCharType())), StandardFormatters.NormalizedStringConverter.getInstance()));
   
   
   /** Object Identifier for syntax of a OpenDate */
@@ -347,8 +347,8 @@ public class ExtendedTypes
    */
   public static final EntityTypeDefinition OPENDATE =
   /* OID, NamespaceURI, name, Description, datatype */
-    new DefaultTypeDefinition(OID_OPENDATE, null,
-          NAME_OPENDATE, "OpenDate", new DateTimeType(DateTime.TimeAccuracy.MILLISECOND, false), StandardDateFormatters.OpenDateConverter.getInstance());
+    DefaultDefinition.shared(new DefaultTypeDefinition(OID_OPENDATE, null,
+          NAME_OPENDATE, "OpenDate", new DateTimeType(DateTime.TimeAccuracy.MILLISECOND, false), StandardDateFormatters.OpenDateConverter.getInstance()));
   
   
   /** Object Identifier for syntax of a Percentage */
@@ -360,8 +360,8 @@ public class ExtendedTypes
    */
   public static final EntityTypeDefinition PERCENTAGE =
   /* OID, NamespaceURI, name, Description, datatype */
-    new DefaultTypeDefinition(OID_PERCENTAGE, null,
-          NAME_PERCENTAGE, "Percentage", new PercentageType(), NumericFormatters.PercentageConverter.getInstance());
+    DefaultDefinition.shared(new DefaultTypeDefinition(OID_PERCENTAGE, null,
+          NAME_PERCENTAGE, "Percentage", new PercentageType(), NumericFormatters.PercentageConverter.getInstance()));
   
   
   /** Object Identifier for syntax of a QualifiedName */
@@ -373,8 +373,8 @@ public class ExtendedTypes
    */
   public static final EntityTypeDefinition QUALIFIED_NAME =
   /* OID, NamespaceURI, name, Description, datatype */
-    new DefaultTypeDefinition(OID_QUALIFIED_NAME, null,
-          NAME_QUALIFIED_NAME, "QualifiedName", new StringType(new UnnamedTypeReference(new UnicodeCharType())), StandardFormatters.QualifiedNameConverter.getInstance());
+    DefaultDefinition.shared(new DefaultTypeDefinition(OID_QUALIFIED_NAME, null,
+          NAME_QUALIFIED_NAME, "QualifiedName", new StringType(new UnnamedTypeReference(new UnicodeCharType())), StandardFormatters.QualifiedNameConverter.getInstance()));
   
   
   
@@ -387,8 +387,8 @@ public class ExtendedTypes
    */
   public static final EntityTypeDefinition TEXT =
   /* OID, NamespaceURI, name, Description, datatype */
-    new DefaultTypeDefinition(OID_TEXT, null,
-          NAME_TEXT, "Text", new StringType(new UnnamedTypeReference(new UnicodeCharType())), StandardFormatters.TextConverter.getInstance());
+    DefaultDefinition.shared(new DefaultTypeDefinition(OID_TEXT, null,
+          NAME_TEXT, "Text", new StringType(new UnnamedTypeReference(new UnicodeCharType())), StandardFormatters.TextConverter.getInstance()));
   
   
   /** Object Identifier for syntax of a Token */
@@ -400,8 +400,8 @@ public class ExtendedTypes
    */
   public static final EntityTypeDefinition TOKEN =
   /* OID, NamespaceURI, name, Description, datatype */
-    new DefaultTypeDefinition(OID_TOKEN, null,
-          NAME_TOKEN, "Token", new StringType(new UnnamedTypeReference(new UnicodeCharType())), StandardFormatters.TokenConverter.getInstance());
+    DefaultDefinition.shared(new DefaultTypeDefinition(OID_TOKEN, null,
+          NAME_TOKEN, "Token", new StringType(new UnnamedTypeReference(new UnicodeCharType())), StandardFormatters.TokenConverter.getInstance()));
   
   
   /** Object Identifier for syntax of a Time Of Day with Timezone */
@@ -413,8 +413,8 @@ public class ExtendedTypes
    */
   public static final EntityTypeDefinition TIME_OF_DAY_TZ =
   /* OID, NamespaceURI, name, Description, datatype */
-    new DefaultTypeDefinition(OID_TIME_OF_DAY_TZ, null,
-          NAME_TIME_OF_DAY_TZ, "Time Of Day with Timezone", new TimeType(DateTime.TimeAccuracy.SECOND, false), StandardDateFormatters.TimeOfDayWithTimezoneConverter.getInstance());
+    DefaultDefinition.shared(new DefaultTypeDefinition(OID_TIME_OF_DAY_TZ, null,
+          NAME_TIME_OF_DAY_TZ, "Time Of Day with Timezone", new TimeType(DateTime.TimeAccuracy.SECOND, false), StandardDateFormatters.TimeOfDayWithTimezoneConverter.getInstance()));
   
   
   /** Object Identifier for syntax of a UInt8 */
@@ -426,8 +426,8 @@ public class ExtendedTypes
    */
   public static final EntityTypeDefinition UINT8 =
   /* OID, NamespaceURI, name, Description, datatype */
-    new DefaultTypeDefinition(OID_UINT8, null,
-          NAME_UINT8, "UInt8", new UnsignedByteType(), NumericFormatters.unsignedByteConverter.getInstance());
+    DefaultDefinition.shared(new DefaultTypeDefinition(OID_UINT8, null,
+          NAME_UINT8, "UInt8", new UnsignedByteType(), NumericFormatters.unsignedByteConverter.getInstance()));
   
   
   /** Object Identifier for syntax of a UInt16 */
@@ -439,8 +439,8 @@ public class ExtendedTypes
    */
   public static final EntityTypeDefinition UINT16 =
   /* OID, NamespaceURI, name, Description, datatype */
-    new DefaultTypeDefinition(OID_UINT16, null,
-          NAME_UINT16, "UInt16", new UnsignedShortType(), NumericFormatters.unsignedShortConverter.getInstance());
+    DefaultDefinition.shared(new DefaultTypeDefinition(OID_UINT16, null,
+          NAME_UINT16, "UInt16", new UnsignedShortType(), NumericFormatters.unsignedShortConverter.getInstance()));
   
   
   /** Object Identifier for syntax of a UInt32 */
@@ -452,8 +452,8 @@ public class ExtendedTypes
    */
   public static final EntityTypeDefinition UINT32 =
   /* OID, NamespaceURI, name, Description, datatype */
-    new DefaultTypeDefinition(OID_UINT32, null,
-          NAME_UINT32, "UInt32", new UnsignedIntType(), NumericFormatters.unsignedIntConverter.getInstance());
+    DefaultDefinition.shared(new DefaultTypeDefinition(OID_UINT32, null,
+          NAME_UINT32, "UInt32", new UnsignedIntType(), NumericFormatters.unsignedIntConverter.getInstance()));
   
   
   /** Object Identifier for syntax of a UInt64 */
@@ -465,8 +465,8 @@ public class ExtendedTypes
    */
   public static final EntityTypeDefinition UINT64 =
   /* OID, NamespaceURI, name, Description, datatype */
-    new DefaultTypeDefinition(OID_UINT64, null,
-          NAME_UINT64, "UInt64", new UnsignedLongType(), NumericFormatters.unsignedLongConverter.getInstance());
+    DefaultDefinition.shared(new DefaultTypeDefinition(OID_UINT64, null,
+          NAME_UINT64, "UInt64", new UnsignedLongType(), NumericFormatters.unsignedLongConverter.getInstance()));
   
   
   /** Object Identifier for syntax of a URI */
@@ -478,7 +478,7 @@ public class ExtendedTypes
    */
   public static final EntityTypeDefinition URI =
   /* OID, NamespaceURI, name, Description, datatype */
-    new DefaultTypeDefinition(OID_URI, null,
-          NAME_URI, "URI", new URIType(), StandardFormatters.URIConverter.getInstance());
+    DefaultDefinition.shared(new DefaultTypeDefinition(OID_URI, null,
+          NAME_URI, "URI", new URIType(), StandardFormatters.URIConverter.getInstance()));
 
 }

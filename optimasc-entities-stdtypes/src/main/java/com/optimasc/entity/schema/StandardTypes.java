@@ -71,7 +71,7 @@ import omg.org.astm.type.UnnamedTypeReference;
  * </tr>
  * <tr>
  * <td>{@link #OBJECT_IDENTIFIER}</td>
- * <td>OBJECT IDENTIFIER</td>
+ * <td>OID</td>
  * <td>{@link #OID_OBJECT_IDENTIFIER}</td>
  * <td>OBJECT IDENTIFIER</td>
  * <td><code>java.lang.String</code></td>
@@ -79,7 +79,7 @@ import omg.org.astm.type.UnnamedTypeReference;
  * </tr>
  * <tr>
  * <td>{@link #OCTET_STRING}</td>
- * <td>OCTET STRING</td>
+ * <td>BINARY</td>
  * <td>{@link #OID_OCTET_STRING}</td>
  * <td>OCTET STRING</td>
  * <td><code>byte[]</code></td>
@@ -192,8 +192,8 @@ public class StandardTypes
    */
   public static final EntityTypeDefinition BOOLEAN =
   /* OID, NamespaceURI, name, Description, datatype */
-    new DefaultTypeDefinition(OID_BOOLEAN, null,
-          NAME_BOOLEAN, "Boolean", new BooleanType(), StandardFormatters.BooleanConverter.getInstance());
+    DefaultDefinition.shared(new DefaultTypeDefinition(OID_BOOLEAN, null,
+          NAME_BOOLEAN, "Boolean", new BooleanType(), StandardFormatters.BooleanConverter.getInstance()));
 
   /**
    * Object Identifier for syntax of a string, equivalent to
@@ -208,8 +208,8 @@ public class StandardTypes
    */
   public static final EntityTypeDefinition STRING =
   /* OID, NamespaceURI, name, Description, datatype */
-  new DefaultTypeDefinition(OID_STRING, null,
-          NAME_STRING, "Directory String", new StringType(new UnnamedTypeReference(new UnicodeCharType())), StandardFormatters.StringConverter.getInstance());
+  DefaultDefinition.shared(new DefaultTypeDefinition(OID_STRING, null,
+          NAME_STRING, "Directory String", new StringType(new UnnamedTypeReference(new UnicodeCharType())), StandardFormatters.StringConverter.getInstance()));
   
   /** Object Identifier for syntax of INTEGER */
   public static final String OID_INTEGER = "1.3.6.1.4.1.1466.115.121.1.27";
@@ -222,18 +222,18 @@ public class StandardTypes
    */
   public static final EntityTypeDefinition INTEGER =
   /* OID, NamespaceURI, name, Description, datatype */
-  new DefaultTypeDefinition(
-  OID_INTEGER, null, NAME_INTEGER, "INTEGER", new IntegralType(),NumericFormatters.IntegerCanonicalConverter.getInstance());
+  DefaultDefinition.shared(new DefaultTypeDefinition(
+  OID_INTEGER, null, NAME_INTEGER, "INTEGER", new IntegralType(),NumericFormatters.IntegerCanonicalConverter.getInstance()));
 
   /** Object Identifier for syntax of an OBJECT IDENTIFIER */
   public static final String OID_OBJECT_IDENTIFIER = "1.3.6.1.4.1.1466.115.121.1.38";
-  public static final String NAME_OBJECT_IDENTIFIER = "objectIdentifier";
+  public static final String NAME_OBJECT_IDENTIFIER = "OID";
   
   /** Type definition for OBJECT IDENTIFIER type. */
   public static final EntityTypeDefinition OBJECT_IDENTIFIER =
   /* OID, NamespaceURI, name, Description, Class, formatter, allowedValues */
-  new DefaultTypeDefinition(OID_OBJECT_IDENTIFIER, null, NAME_OBJECT_IDENTIFIER, "OBJECT IDENTIFIER",
-      new ObjectIdentifierType(), StandardFormatters.OIDConverter.getInstance());
+  DefaultDefinition.shared(new DefaultTypeDefinition(OID_OBJECT_IDENTIFIER, null, NAME_OBJECT_IDENTIFIER, "OBJECT IDENTIFIER",
+      new ObjectIdentifierType(), StandardFormatters.OIDConverter.getInstance()));
 
   /** Object Identifier for syntax of an array of bytes / OCTET STRING */
   public static final String OID_OCTET_STRING = "1.3.6.1.4.1.1466.115.121.1.40";
@@ -245,9 +245,9 @@ public class StandardTypes
    */
   public static final EntityTypeDefinition OCTET_STRING =
   /* OID, NamespaceURI, name, Description, Class, formatter, allowedValues */
-  new DefaultTypeDefinition(OID_OCTET_STRING, 
+  DefaultDefinition.shared(new DefaultTypeDefinition(OID_OCTET_STRING, 
       null, NAME_OCTET_STRING,
-      "OCTET STRING", new BinaryType(),null);
+      "OCTET STRING", new BinaryType(),null));
 
   /** Object Identifier for syntax of a class type */
   public static final String NAME_JAVA_CLASS = "javaClass";
@@ -258,8 +258,8 @@ public class StandardTypes
    */
   public static final EntityTypeDefinition JAVA_CLASS =
   /* OID, NamespaceURI, name, Description, Class, formatter, allowedValues */
-  new DefaultTypeDefinition(null, null, NAME_JAVA_CLASS, "Java Class",
-      new ClassType(),null);  
+  DefaultDefinition.shared(new DefaultTypeDefinition(null, null, NAME_JAVA_CLASS, "Java Class",
+      new ClassType(),null));  
 
   /** Object Identifier for syntax of a GeneralizedTime */
   public static final String OID_GENERALIZEDTIME = "1.3.6.1.4.1.1466.115.121.1.24";
@@ -272,8 +272,8 @@ public class StandardTypes
    */
   public static final EntityTypeDefinition GENERALIZEDTIME =
   /* OID, NamespaceURI, name, Description, Class, formatter, allowedValues */
-  new DefaultTypeDefinition(OID_GENERALIZEDTIME, null, NAME_GENERALIZEDTIME,
-      "Generalized Time", new DateTimeType(DateTime.TimeAccuracy.MILLISECOND, false), StandardDateFormatters.GeneralizedTimeConverter.getInstance());
+  DefaultDefinition.shared(new DefaultTypeDefinition(OID_GENERALIZEDTIME, null, NAME_GENERALIZEDTIME,
+      "Generalized Time", new DateTimeType(DateTime.TimeAccuracy.MILLISECOND, false), StandardDateFormatters.GeneralizedTimeConverter.getInstance()));
 
   /** Object Identifier for syntax of an IA5String */
   public static final String OID_IA5STRING = "1.3.6.1.4.1.1466.115.121.1.26";
@@ -284,8 +284,8 @@ public class StandardTypes
    */
   public static final EntityTypeDefinition IA5STRING =
   /* OID, NamespaceURI, name, Description, datatype */
-    new DefaultTypeDefinition(OID_IA5STRING, null,
-          NAME_IA5STRING, "IA5 String", new StringType(new UnnamedTypeReference(new ASCIICharType())), StandardFormatters.IA5StringConverter.getInstance());
+    DefaultDefinition.shared(new DefaultTypeDefinition(OID_IA5STRING, null,
+          NAME_IA5STRING, "IA5 String", new StringType(new UnnamedTypeReference(new ASCIICharType())), StandardFormatters.IA5StringConverter.getInstance()));
 
   /** Object Identifier for syntax of a PrintableString */
   public static final String OID_PRINTABLESTRING = "1.3.6.1.4.1.1466.115.121.1.44";
@@ -297,8 +297,8 @@ public class StandardTypes
    */
   public static final EntityTypeDefinition PRINTABLESTRING =
   /* OID, NamespaceURI, name, Description, datatype */
-    new DefaultTypeDefinition(OID_PRINTABLESTRING, null,
-          NAME_PRINTABLESTRING, "Printable String", new StringType(new UnnamedTypeReference(new VisibleCharType())), StandardFormatters.PrintableStringConverter.getInstance());
+    DefaultDefinition.shared(new DefaultTypeDefinition(OID_PRINTABLESTRING, null,
+          NAME_PRINTABLESTRING, "Printable String", new StringType(new UnnamedTypeReference(new VisibleCharType())), StandardFormatters.PrintableStringConverter.getInstance()));
 
   /*---------------- Base ASN.1 IETF draft-codere-ldapsyntax syntaxes ----------------*/
   
@@ -311,8 +311,8 @@ public class StandardTypes
    */
   public static final EntityTypeDefinition DATE =
   /* OID, NamespaceURI, name, Description, datatype */
-    new DefaultTypeDefinition(OID_DATE, null,
-          NAME_DATE, "Date", new DateType(), StandardDateFormatters.LDAPDateConverter.getInstance());
+    DefaultDefinition.shared(new DefaultTypeDefinition(OID_DATE, null,
+          NAME_DATE, "Date", new DateType(), StandardDateFormatters.LDAPDateConverter.getInstance()));
   
   
   /** Object Identifier for syntax of a Date-Time */
@@ -324,8 +324,8 @@ public class StandardTypes
    */
   public static final EntityTypeDefinition DATETIME =
   /* OID, NamespaceURI, name, Description, datatype */
-    new DefaultTypeDefinition(OID_DATETIME, null,
-          NAME_DATETIME, "Date-Time", new DateTimeType(DateTime.TimeAccuracy.SECOND, true), StandardDateFormatters.LDAPDateTimeConverter.getInstance());
+    DefaultDefinition.shared(new DefaultTypeDefinition(OID_DATETIME, null,
+          NAME_DATETIME, "Date-Time", new DateTimeType(DateTime.TimeAccuracy.SECOND, true), StandardDateFormatters.LDAPDateTimeConverter.getInstance()));
   
   
   /** Object Identifier for syntax of a Duration */
@@ -337,8 +337,8 @@ public class StandardTypes
    */
   public static final EntityTypeDefinition DURATION =
   /* OID, NamespaceURI, name, Description, datatype */
-    new DefaultTypeDefinition(OID_DURATION, null,
-          NAME_DURATION, "Duration", new CalendarDurationType(), CalendarDurationConverter.getInstance());
+    DefaultDefinition.shared(new DefaultTypeDefinition(OID_DURATION, null,
+          NAME_DURATION, "Duration", new CalendarDurationType(), CalendarDurationConverter.getInstance()));
   
   /** Object Identifier for syntax of a Visible String */
   public static final String OID_VISIBLE_STRING = "1.3.6.1.4.1.61799.5.40.26";
@@ -349,8 +349,8 @@ public class StandardTypes
    */
   public static final EntityTypeDefinition VISIBLE_STRING =
   /* OID, NamespaceURI, name, Description, datatype */
-    new DefaultTypeDefinition(OID_VISIBLE_STRING, null,
-          NAME_VISIBLE_STRING, "Visible String", new StringType(new UnnamedTypeReference(new VisibleCharType())), StandardFormatters.VisibleStringConverter.getInstance());
+    DefaultDefinition.shared(new DefaultTypeDefinition(OID_VISIBLE_STRING, null,
+          NAME_VISIBLE_STRING, "Visible String", new StringType(new UnnamedTypeReference(new VisibleCharType())), StandardFormatters.VisibleStringConverter.getInstance()));
   
   /** Object Identifier for syntax of a Real */
   public static final String OID_REAL = "1.3.6.1.4.1.61799.5.40.9";
@@ -361,8 +361,8 @@ public class StandardTypes
    */
   public static final EntityTypeDefinition REAL =
   /* OID, NamespaceURI, name, Description, datatype */
-    new DefaultTypeDefinition(OID_REAL, null,
-          NAME_REAL, "Real", new DoubleType(), NumericFormatters.RealConverter.getInstance());
+    DefaultDefinition.shared(new DefaultTypeDefinition(OID_REAL, null,
+          NAME_REAL, "Real", new DoubleType(), NumericFormatters.RealConverter.getInstance()));
   
   
   /** Object Identifier for syntax of a Time Of Day */
@@ -374,7 +374,7 @@ public class StandardTypes
    */
   public static final EntityTypeDefinition TIME_OF_DAY =
   /* OID, NamespaceURI, name, Description, datatype */
-    new DefaultTypeDefinition(OID_TIME_OF_DAY, null,
-          NAME_TIME_OF_DAY, "Time Of Day", new TimeType(DateTime.TimeAccuracy.SECOND, true), StandardDateFormatters.TimeOfDayConverter.getInstance());
+    DefaultDefinition.shared(new DefaultTypeDefinition(OID_TIME_OF_DAY, null,
+          NAME_TIME_OF_DAY, "Time Of Day", new TimeType(DateTime.TimeAccuracy.SECOND, true), StandardDateFormatters.TimeOfDayConverter.getInstance()));
   
 }

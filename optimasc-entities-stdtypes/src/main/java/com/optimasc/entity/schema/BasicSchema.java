@@ -3,8 +3,8 @@ package com.optimasc.entity.schema;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -38,7 +38,7 @@ import com.optimasc.schema.ItemDefinition;
  * followed by {@link #add(Definition)} to replace an entry.
  * </p>
  *
- * <h3>Namespace / tree view</h3>
+ * <h2>Namespace / tree view</h2>
  * <p>
  * This class also implements {@link Schema} (which extends {@link Namespace}),
  * so the schema is browsable as a live entity tree. The tree structure is:
@@ -56,9 +56,22 @@ import com.optimasc.schema.ItemDefinition;
  * <p>
  * The tree is <em>live</em>: definitions added via {@link #add(Definition)} or
  * removed via {@link #remove(Definition)} are immediately visible through
- * {@link ContainerEntity#getChildren()} on the relevant container node. Every
- * definition's {@link Entity#getNamespace()} returns this {@code BasicSchema}
- * instance.
+ * {@link ContainerEntity#getChildren()} on the relevant container node.
+ * </p>
+ *
+ * <h2>Owned and shared definitions</h2>
+ * <p>
+ * A {@link DefaultDefinition} added to this schema is <em>owned</em> by it:
+ * its {@link Entity#getNamespace()} returns this {@code BasicSchema} instance,
+ * until the definition is removed. A definition can be owned by only one
+ * schema, so {@link #add(Definition)} refuses a definition owned by another
+ * schema.
+ * </p>
+ * <p>
+ * A {@link DefaultDefinition#isShared() shared} definition, such as the
+ * constants of {@link StandardTypes}, is never owned: it is indexed and listed
+ * like any other definition, but its namespace is not modified, so it can be
+ * added to any number of schemas.
  * </p>
  *
  * <p>
@@ -68,8 +81,15 @@ import com.optimasc.schema.ItemDefinition;
  * wired up in a future pass.
  * </p>
  *
+ * <h2>Concurrency</h2>
  * <p>
- * This class is not synchronized against concurrent multithreaded access.
+ * This class is thread-safe: every method that reads or modifies the
+ * definitions synchronizes on this schema, so callers can make a sequence of
+ * calls atomic with {@code synchronized (schema) { ... }}. The iterators
+ * returned by {@link #getItemDefinitions()}, {@link #getTypeDefinitions()}
+ * and {@link #getClassDefinitions()} work on a copy of the definitions made
+ * when they are created: they are never affected by later modifications of
+ * the schema.
  * </p>
  *
  * @see Schema
@@ -120,7 +140,7 @@ public class BasicSchema implements Schema
   public BasicSchema()
   {
     this.index = new HashMap<String, Definition>();
-    this.values = new HashSet<Definition>();
+    this.values = new LinkedHashSet<Definition>();
 
     // Build the three container nodes
     EntityName attrName = EntityName.EMPTY
@@ -157,23 +177,36 @@ public class BasicSchema implements Schema
    * </p>
    *
    * <p>
-   * When the definition is a {@link DefaultDefinition}, its
-   * {@link Entity#getNamespace()} is set to this schema so that
+   * When the definition is a {@link DefaultDefinition} that is not
+   * {@link DefaultDefinition#isShared() shared}, this schema becomes its owner:
+   * its {@link Entity#getNamespace()} is set to this schema so that
    * {@code entity.getNamespace().getCapability(Schema.class)} round-trips back
-   * to this instance.
+   * to this instance. The addition is refused if the definition is already
+   * owned by another schema. A shared definition is added without modifying its
+   * namespace.
    * </p>
    *
    * @param definition
    *          [in] The definition to add. Must not be {@code null}.
    * @return {@code true} if the definition was added; {@code false} if a
-   *         definition with the same expanded name or OID already exists.
+   *         definition with the same expanded name or OID already exists, or
+   *         if the definition is owned by another schema.
    * @throws IllegalArgumentException
    *           if {@code definition} is {@code null}.
    */
-  public boolean add(Definition definition)
+  public synchronized boolean add(Definition definition)
   {
     if (definition == null)
       throw new IllegalArgumentException("'definition' must not be null.");
+    DefaultDefinition owned = null;
+    if ((definition instanceof DefaultDefinition)
+        && (((DefaultDefinition) definition).isShared() == false))
+    {
+      owned = (DefaultDefinition) definition;
+      Namespace owner = owned.getNamespace();
+      if ((owner != UnboundSchemaNamespace.INSTANCE) && (owner != this))
+        return false;
+    }
     String expandedName = definition.getExpandedName();
     if (index.containsKey(expandedName))
       return false;
@@ -185,8 +218,8 @@ public class BasicSchema implements Schema
       index.put(id, definition);
     values.add(definition);
     // Wire the namespace back-reference so the round-trip works.
-    if (definition instanceof DefaultDefinition)
-      ((DefaultDefinition) definition).setNamespace(this);
+    if (owned != null)
+      owned.setNamespace(this);
     return true;
   }
 
@@ -197,7 +230,7 @@ public class BasicSchema implements Schema
    * Both the expanded name and the OID index entries are removed. If the
    * definition is a {@link DefaultDefinition} whose namespace is currently this
    * schema, its namespace is reset to the unbound placeholder so it remains
-   * non-null.
+   * non-null. The namespace of a shared definition is never modified.
    * </p>
    *
    * @param definition
@@ -205,7 +238,7 @@ public class BasicSchema implements Schema
    * @return {@code true} if the definition was present and removed;
    *         {@code false} if it was not found.
    */
-  public boolean remove(Definition definition)
+  public synchronized boolean remove(Definition definition)
   {
     if (definition == null)
       throw new IllegalArgumentException("'definition' must not be null.");
@@ -235,7 +268,7 @@ public class BasicSchema implements Schema
    * {@link DefaultDefinition} instances that currently point to this schema.
    * </p>
    */
-  public void clear()
+  public synchronized void clear()
   {
     for (Iterator it = values.iterator(); it.hasNext();)
     {
@@ -256,7 +289,7 @@ public class BasicSchema implements Schema
    *
    * @return The definition count. Never negative.
    */
-  public int size()
+  public synchronized int size()
   {
     return values.size();
   }
@@ -264,7 +297,7 @@ public class BasicSchema implements Schema
   /**
    * @return {@code true} if this schema contains no definitions.
    */
-  public boolean isEmpty()
+  public synchronized boolean isEmpty()
   {
     return values.isEmpty();
   }
@@ -285,7 +318,7 @@ public class BasicSchema implements Schema
   /** {@inheritDoc} */
   public Iterator<ItemDefinition> getItemDefinitions()
   {
-    return new TypedIterator<ItemDefinition>(values.iterator(),
+    return new TypedIterator<ItemDefinition>(snapshot().iterator(),
         ItemDefinition.class);
   }
 
@@ -305,7 +338,7 @@ public class BasicSchema implements Schema
   /** {@inheritDoc} */
   public Iterator<EntityTypeDefinition> getTypeDefinitions()
   {
-    return new TypedIterator<EntityTypeDefinition>(values.iterator(),
+    return new TypedIterator<EntityTypeDefinition>(snapshot().iterator(),
         EntityTypeDefinition.class);
   }
 
@@ -325,7 +358,7 @@ public class BasicSchema implements Schema
   /** {@inheritDoc} */
   public Iterator<ClassDefinition> getClassDefinitions()
   {
-    return new TypedIterator<ClassDefinition>(values.iterator(),
+    return new TypedIterator<ClassDefinition>(snapshot().iterator(),
         ClassDefinition.class);
   }
 
@@ -447,7 +480,7 @@ public class BasicSchema implements Schema
    * Returns a string representation listing the number of definitions of each
    * type. Intended for debugging only.
    */
-  public String toString()
+  public synchronized String toString()
   {
     int items = 0;
     int types = 0;
@@ -471,7 +504,13 @@ public class BasicSchema implements Schema
   // Private helpers
   // -----------------------------------------------------------------------
 
-  private Definition lookup(String key)
+  /** Returns a copy of the registered definitions, in registration order. */
+  private synchronized List<Definition> snapshot()
+  {
+    return new ArrayList<Definition>(values);
+  }
+
+  private synchronized Definition lookup(String key)
   {
     if (key == null)
       throw new IllegalArgumentException("'key' must not be null.");
@@ -685,11 +724,14 @@ public class BasicSchema implements Schema
     public List<? extends Entity> getChildren()
     {
       List<Entity> result = new ArrayList<Entity>();
-      for (Iterator it = owner.values.iterator(); it.hasNext();)
+      synchronized (owner)
       {
-        Object d = it.next();
-        if (definitionType.isInstance(d))
-          result.add((Entity) d);
+        for (Iterator it = owner.values.iterator(); it.hasNext();)
+        {
+          Object d = it.next();
+          if (definitionType.isInstance(d))
+            result.add((Entity) d);
+        }
       }
       return Collections.unmodifiableList(result);
     }
@@ -697,10 +739,13 @@ public class BasicSchema implements Schema
     public int getChildCountHint()
     {
       int count = 0;
-      for (Iterator it = owner.values.iterator(); it.hasNext();)
+      synchronized (owner)
       {
-        if (definitionType.isInstance(it.next()))
-          count++;
+        for (Iterator it = owner.values.iterator(); it.hasNext();)
+        {
+          if (definitionType.isInstance(it.next()))
+            count++;
+        }
       }
       return count;
     }

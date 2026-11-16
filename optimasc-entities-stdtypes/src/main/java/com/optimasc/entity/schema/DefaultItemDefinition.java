@@ -354,6 +354,7 @@ public class DefaultItemDefinition extends DefaultDefinition
    */
   public void setTypeName(String typeName)
   {
+    checkModifiable();
     if (typeName == null || typeName.length() == 0)
       throw new IllegalArgumentException(
           "Type name must not be null or empty.");
@@ -429,6 +430,7 @@ public class DefaultItemDefinition extends DefaultDefinition
    */
   public void setValueType(String valueType, String contextType)
   {
+    checkModifiable();
     if (valueType == null)
       throw new IllegalArgumentException(
           "Value type must not be null.");
@@ -474,6 +476,7 @@ public class DefaultItemDefinition extends DefaultDefinition
    */
   public void setReadOnly(boolean readOnly)
   {
+    checkModifiable();
     DefaultAttribute attr =
         new DefaultAttribute(KEY_READONLY, Boolean.class);
     attr.add(Boolean.valueOf(readOnly));
@@ -487,6 +490,7 @@ public class DefaultItemDefinition extends DefaultDefinition
    */
   public void setUsage(AttributeUsage usage)
   {
+    checkModifiable();
     if (usage == null)
       throw new IllegalArgumentException(
           "Attribute usage must not be null.");
@@ -510,6 +514,7 @@ public class DefaultItemDefinition extends DefaultDefinition
    */
   public void setMaxValueLength(long maxLength)
   {
+    checkModifiable();
     if (maxLength < -1)
       throw new IllegalArgumentException(
           "Maximum value length must be -1 (unrestricted) or a "
@@ -533,6 +538,7 @@ public class DefaultItemDefinition extends DefaultDefinition
    */
   public void clearMaxValueLength()
   {
+    checkModifiable();
     attributes.remove(KEY_MAX_VALUE_LENGTH);
   }
 
@@ -564,6 +570,7 @@ public class DefaultItemDefinition extends DefaultDefinition
    */
   public void setChoices(Object[] choices, String choiceType)
   {
+    checkModifiable();
     if (choices == null || choices.length == 0)
       throw new IllegalArgumentException(
           "Choices must not be null or empty.");
@@ -620,6 +627,7 @@ public class DefaultItemDefinition extends DefaultDefinition
    */
   public void clearChoices()
   {
+    checkModifiable();
     attributes.remove(KEY_CHOICES);
     attributes.remove(KEY_CHOICE_TYPE);
   }

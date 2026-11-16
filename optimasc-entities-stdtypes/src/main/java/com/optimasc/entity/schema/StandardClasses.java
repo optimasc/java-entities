@@ -69,7 +69,7 @@ public class StandardClasses
    *  {@code top}. The only mandatory attribute is
    *  {@link Definition#KEY_OBJECT_CLASS_NAME}, consistent with the
    *  LDAP {@code objectClass} requirement. */
-  public static final DefaultClassDefinition CLASS_TOP = new DefaultClassDefinition(
+  public static final DefaultClassDefinition CLASS_TOP = DefaultDefinition.shared(new DefaultClassDefinition(
       OID_TOP,                                        // oid
       null,                                           // namespaceURI
       NAME_TOP,                                       // localName
@@ -77,7 +77,7 @@ public class StandardClasses
       null,                                           // parentClass
       ObjectClassKind.abstractClass,                  // classKind
       new String[] { Definition.KEY_OBJECT_CLASS_NAME } // mandatoryAttributes
-  );
+  ));
 
   /** Local name of the class definition object class. */
   public static final String NAME_CLASS_DEFINITION = "ClassDefinition";
@@ -85,7 +85,7 @@ public class StandardClasses
   /** Class definition for schema definitions that describe object
    *  classes. Instances must carry at minimum a local name and an
    *  object class identifier. */
-  public static final DefaultClassDefinition CLASS_DEFINITION = new DefaultClassDefinition(
+  public static final DefaultClassDefinition CLASS_DEFINITION = DefaultDefinition.shared(new DefaultClassDefinition(
       null,                                           // oid
       null,                                           // namespaceURI
       NAME_CLASS_DEFINITION,                          // localName
@@ -94,7 +94,7 @@ public class StandardClasses
       ObjectClassKind.structuralClass,                // classKind
       new String[] { Definition.KEY_NAME,
                      Definition.KEY_OBJECT_CLASS_NAME } // mandatoryAttributes
-  );
+  ));
 
   /** Local name of the attribute definition object class. */
   public static final String NAME_ATTRIBUTE_DEFINITION = "AttributeDefinition";
@@ -103,7 +103,7 @@ public class StandardClasses
    *  attributes or properties. Instances must carry at minimum a
    *  local name, an object class identifier, and a type name
    *  identifying the syntax of the attribute's values. */
-  public static final DefaultClassDefinition ATTRIBUTE_DEFINITION = new DefaultClassDefinition(
+  public static final DefaultClassDefinition ATTRIBUTE_DEFINITION = DefaultDefinition.shared(new DefaultClassDefinition(
       null,                                           // oid
       null,                                           // namespaceURI
       NAME_ATTRIBUTE_DEFINITION,                      // localName
@@ -113,7 +113,7 @@ public class StandardClasses
       new String[] { Definition.KEY_NAME,
                      Definition.KEY_OBJECT_CLASS_NAME,
                      ItemDefinition.KEY_TYPE_NAME }   // mandatoryAttributes
-  );
+  ));
 
   /** Local name of the type definition object class. */
   public static final String NAME_TYPE_DEFINITION = "TypeDefinition";
@@ -122,7 +122,7 @@ public class StandardClasses
    *  or syntaxes. Instances must carry at minimum a local name, an
    *  object class identifier, and a Java class name identifying the
    *  runtime representation of values of this type. */
-  public static final DefaultClassDefinition TYPE_DEFINITION = new DefaultClassDefinition(
+  public static final DefaultClassDefinition TYPE_DEFINITION = DefaultDefinition.shared(new DefaultClassDefinition(
       null,                                           // oid
       null,                                           // namespaceURI
       NAME_TYPE_DEFINITION,                           // localName
@@ -132,5 +132,5 @@ public class StandardClasses
       new String[] { Definition.KEY_NAME,
                      Definition.KEY_OBJECT_CLASS_NAME,
                      ClassDefinition.KEY_TYPE_JAVA_CLASS_NAME } // mandatoryAttributes
-  );
+  ));
 }

@@ -176,6 +176,7 @@ public class DefaultClassDefinition extends DefaultDefinition
    */
   public void setKind(ObjectClassKind kind)
   {
+    checkModifiable();
     if (kind == null)
       throw new IllegalArgumentException(
           "Object class kind must not be null.");
@@ -210,6 +211,7 @@ public class DefaultClassDefinition extends DefaultDefinition
    */
   public void setSuperClass(String superClass)
   {
+    checkModifiable();
     if (superClass == null)
     {
       attributes.remove(KEY_SUPERCLASS);
@@ -234,6 +236,7 @@ public class DefaultClassDefinition extends DefaultDefinition
    */
   public void setMandatoryAttributes(String[] names)
   {
+    checkModifiable();
     if (names == null)
     {
       attributes.remove(KEY_MANDATORY_ATTRIBUTES);
@@ -266,6 +269,7 @@ public class DefaultClassDefinition extends DefaultDefinition
    */
   public void setAllowedParents(String[] names)
   {
+    checkModifiable();
     if (names == null)
     {
       attributes.remove(KEY_ALLOWED_PARENTS);
@@ -291,6 +295,7 @@ public class DefaultClassDefinition extends DefaultDefinition
    */
   public void setRestricted(boolean restricted)
   {
+    checkModifiable();
     DefaultAttribute attr =
         new DefaultAttribute(KEY_RESTRICTED, Boolean.class);
     attr.add(Boolean.valueOf(restricted));
@@ -308,6 +313,7 @@ public class DefaultClassDefinition extends DefaultDefinition
    */
   public void setClz(Class<?> clz)
   {
+    checkModifiable();
     if (clz == null)
     {
       attributes.remove(KEY_TYPE_JAVA_CLASS_NAME);
@@ -335,6 +341,7 @@ public class DefaultClassDefinition extends DefaultDefinition
    */
   public void setClzByName(String className)
   {
+    checkModifiable();
     if (className == null || className.length() == 0)
       throw new IllegalArgumentException(
           "Class name must not be null or empty.");

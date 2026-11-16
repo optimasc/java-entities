@@ -42,8 +42,28 @@ import com.optimasc.schema.Definition;
  *        are never link entities.</li>
  *  </ul>
  *
+ *  <h2>Shared definitions</h2>
+ *  <p>A definition can be marked as <em>shared</em> with
+ *  {@link #markShared()}, or created through {@link #shared(DefaultDefinition)}.
+ *  This is meant for the constants of definition catalogs, such as
+ *  {@link StandardTypes}, which many schemas use at the same time. A shared
+ *  definition:</p>
+ *  <ul>
+ *    <li>is never owned by a schema: {@link #getNamespace()} always returns
+ *        {@link UnboundSchemaNamespace#INSTANCE}, and
+ *        {@link #setNamespace(Namespace)} throws an
+ *        {@code IllegalStateException};</li>
+ *    <li>can be added to any number of schemas with
+ *        {@link BasicSchema#add(com.optimasc.schema.Definition)};</li>
+ *    <li>cannot be modified: its setters throw an
+ *        {@code UnsupportedOperationException}.</li>
+ *  </ul>
+ *  <p>Marking a definition as shared cannot be undone.</p>
+ *
  *  <p>This class is not synchronized against concurrent multithreaded
- *  access.</p>
+ *  access, except for the shared flag and the namespace back-reference, which
+ *  are visible to all threads once set. A shared definition is never modified,
+ *  so it can be used by several threads.</p>
  *
  *  @see Definition
  *  @author Carl Eric Codere
@@ -65,7 +85,10 @@ public abstract class DefaultDefinition implements EntityDefinition
    *  known — for example when a definition is attached to a live
    *  {@link Schema#asEntity()} tree backed by a real backend.</p>
    */
-  private Namespace namespace = UnboundSchemaNamespace.INSTANCE;
+  private volatile Namespace namespace = UnboundSchemaNamespace.INSTANCE;
+
+  /** {@code true} once this definition is shared: see {@link #markShared()}. */
+  private volatile boolean shared;
   
   // -----------------------------------------------------------------------
   // Constructors
@@ -155,6 +178,73 @@ public abstract class DefaultDefinition implements EntityDefinition
   }
 
   // -----------------------------------------------------------------------
+  // Shared definitions
+  // -----------------------------------------------------------------------
+
+  /** Marks a definition as shared and returns it. This is a convenience for
+   *  declaring the constants of a definition catalog:
+   *
+   *  <pre>
+   *  public static final EntityTypeDefinition BOOLEAN =
+   *      DefaultDefinition.shared(new DefaultTypeDefinition(...));
+   *  </pre>
+   *
+   * @param definition [in] The definition to mark as shared. Must not be
+   *                   {@code null}.
+   * @return {@code definition}.
+   * @throws IllegalArgumentException if {@code definition} is {@code null}.
+   * @throws IllegalStateException if {@code definition} is already owned by
+   *   a schema.
+   * @see #markShared()
+   */
+  public static <T extends DefaultDefinition> T shared(T definition)
+  {
+    if (definition == null)
+      throw new IllegalArgumentException("Definition must not be null.");
+    definition.markShared();
+    return definition;
+  }
+
+  /** Marks this definition as shared. A shared definition is owned by no
+   *  schema, can be added to any number of schemas, and can no longer be
+   *  modified. This cannot be undone.
+   *
+   *  <p>Marking an already shared definition has no effect.</p>
+   *
+   * @throws IllegalStateException if this definition is owned by a schema,
+   *   that is if {@link #getNamespace()} is not
+   *   {@link UnboundSchemaNamespace#INSTANCE}.
+   */
+  public final void markShared()
+  {
+    if (namespace != UnboundSchemaNamespace.INSTANCE)
+      throw new IllegalStateException("Definition '" + getExpandedName()
+          + "' is owned by a schema and cannot be shared.");
+    shared = true;
+  }
+
+  /** Returns {@code true} if this definition is shared.
+   *
+   * @return {@code true} if {@link #markShared()} was called.
+   */
+  public final boolean isShared()
+  {
+    return shared;
+  }
+
+  /** Verifies that this definition can be modified. Every method that
+   *  modifies a definition calls this method first.
+   *
+   * @throws UnsupportedOperationException if this definition is shared.
+   */
+  protected final void checkModifiable()
+  {
+    if (shared)
+      throw new UnsupportedOperationException("Definition '"
+          + getExpandedName() + "' is shared and cannot be modified.");
+  }
+
+  // -----------------------------------------------------------------------
   // Definition — typed setters
   // -----------------------------------------------------------------------
 
@@ -168,6 +258,7 @@ public abstract class DefaultDefinition implements EntityDefinition
    */
   public void setLocalName(String localName)
   {
+    checkModifiable();
     if (localName == null || localName.length() == 0)
       throw new IllegalArgumentException("Local name must not be null or empty.");
     if (localName.length() > NAME_MAX_LENGTH)
@@ -205,6 +296,7 @@ public abstract class DefaultDefinition implements EntityDefinition
    */
   public void setNamespaceURI(String namespaceURI)
   {
+    checkModifiable();
     if (namespaceURI != null && namespaceURI.length() > 0)
     {
       char last = namespaceURI.charAt(namespaceURI.length() - 1);
@@ -232,6 +324,7 @@ public abstract class DefaultDefinition implements EntityDefinition
    */
   public void setOID(String id)
   {
+    checkModifiable();
     if (id == null || id.length() == 0)
       throw new IllegalArgumentException(
           "ID must not be null or empty.");
@@ -263,6 +356,7 @@ public abstract class DefaultDefinition implements EntityDefinition
    */
   public void setDescription(String description)
   {
+    checkModifiable();
     if (description != null && description.length() > DESC_MAX_LENGTH)
       throw new IllegalArgumentException(
           "Description must not exceed " + DESC_MAX_LENGTH
@@ -286,6 +380,7 @@ public abstract class DefaultDefinition implements EntityDefinition
    */
   public void setDisplayName(String displayName)
   {
+    checkModifiable();
     if (displayName == null)
     {
       attributes.remove(KEY_DISPLAY_NAME);
@@ -304,6 +399,7 @@ public abstract class DefaultDefinition implements EntityDefinition
    */
   public void setObsolete(boolean obsolete)
   {
+    checkModifiable();
     DefaultAttribute attr =
         new DefaultAttribute(KEY_OBSOLETE, Boolean.class);
     attr.add(Boolean.valueOf(obsolete));
@@ -317,6 +413,7 @@ public abstract class DefaultDefinition implements EntityDefinition
    */
   public void setOrigin(String origin)
   {
+    checkModifiable();
     if (origin == null)
     {
       attributes.remove(KEY_ORIGIN);
@@ -336,6 +433,7 @@ public abstract class DefaultDefinition implements EntityDefinition
    */
   public void setObjectClass(String objectClass)
   {
+    checkModifiable();
     if (objectClass == null)
     {
       attributes.remove(KEY_OBJECT_CLASS_NAME);
@@ -484,18 +582,45 @@ public abstract class DefaultDefinition implements EntityDefinition
   public Attributes getAttributes(String[] attrIds)
       throws EntityException
   {
-    if (attrIds == null)
-      return new DefaultAttributes(attributes);
-
     DefaultAttributes result = new DefaultAttributes(false);
+    if (attrIds == null)
+    {
+      java.util.Iterator<com.optimasc.attribute.Attribute> it =
+          attributes.iterator();
+      while (it.hasNext())
+        result.put(copyOf(it.next()));
+      return result;
+    }
     for (int i = 0; i < attrIds.length; i++)
     {
       com.optimasc.attribute.Attribute attr =
           attributes.get(attrIds[i]);
       if (attr != null)
-        result.put(attr);
+        result.put(copyOf(attr));
     }
     return result;
+  }
+
+  /** Returns a copy of an attribute, with the same identity, values, context
+   *  keys and default context key, so that modifying the copy does not modify
+   *  this definition.
+   *
+   * @param attr [in] The attribute to copy. Must not be {@code null}.
+   * @return A new attribute equal to {@code attr}.
+   */
+  private static com.optimasc.attribute.Attribute copyOf(
+      com.optimasc.attribute.Attribute attr)
+  {
+    DefaultAttribute copy = new DefaultAttribute(attr.getOID(),
+        attr.getNamespaceURI(), attr.getLocalName(), attr.getValueClass(),
+        attr.getValueTypeName(), attr.isOrdered(), attr.getContextType());
+    int size = attr.size();
+    for (int i = 0; i < size; i++)
+      copy.add(attr.get(i), attr.getContextKey(i));
+    String defaultKey = attr.getDefaultContextKey();
+    if (defaultKey != null)
+      copy.markDefault(defaultKey);
+    return copy;
   }
 
   /** Returns an empty, unmodifiable list.
@@ -603,10 +728,10 @@ public abstract class DefaultDefinition implements EntityDefinition
 
   /** {@inheritDoc}
    *
-   *  <p>Returns {@link UnboundSchemaNamespace#INSTANCE} by default. Call
-   *  {@link #setNamespace(Namespace)} to associate this definition
-   *  with a different namespace once the owning namespace is
-   *  available.</p>
+   *  <p>Returns {@link UnboundSchemaNamespace#INSTANCE} by default, and
+   *  always for a shared definition. Call {@link #setNamespace(Namespace)}
+   *  to associate this definition with a different namespace once the
+   *  owning namespace is available.</p>
    *
    * @return The non-null {@link Namespace} that owns this definition.
    *         Never {@code null}.
@@ -627,11 +752,16 @@ public abstract class DefaultDefinition implements EntityDefinition
    * @param namespace [in] Must not be {@code null}.
    * @throws IllegalArgumentException if {@code namespace} is
    *   {@code null}.
+   * @throws IllegalStateException if this definition is shared: a shared
+   *   definition is owned by no namespace.
    */
   public void setNamespace(Namespace namespace)
   {
     if (namespace == null)
       throw new IllegalArgumentException("Namespace must not be null.");
+    if (shared)
+      throw new IllegalStateException("Definition '" + getExpandedName()
+          + "' is shared and cannot be owned by a namespace.");
     this.namespace = namespace;
   }
 
