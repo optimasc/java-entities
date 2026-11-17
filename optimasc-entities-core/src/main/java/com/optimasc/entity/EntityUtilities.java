@@ -56,10 +56,9 @@ public final class EntityUtilities
   // -----------------------------------------------------------------------
   // Copy
   // -----------------------------------------------------------------------
-
-  /** Copies {@code source} and, if it is a container, its entire
-   *  subtree into {@code destinationParent} under the name
-   *  {@code newLastComponent}.
+  
+  /** Copies {@code source} and its entire subtree under
+   *  {@code destinationParent}.
    *
    *  <p>The subtree is copied entity by entity, parents first:
    *  {@code source} is copied under {@code destinationParent},
@@ -71,17 +70,26 @@ public final class EntityUtilities
    *  copied as a link and never followed.</p>
    *
    *  <p>Each entity is copied with the {@link EntityCopier} of the
-   *  namespace, obtained through
+   *  <em>destination</em> namespace, obtained through
    *  {@link Namespace#getCapability(Class)
-   *  getCapability(EntityCopier.class)}. If the namespace provides
-   *  no copier, each entity is instead re-created with
+   *  getCapability(EntityCopier.class)}. The source may belong to
+   *  another namespace when that copier accepts it, as reported by
+   *  {@link EntityCopier#canCopy(Entity, Entity)}; which sources a
+   *  copier accepts is defined by each implementation and is not
+   *  guaranteed. Only the root of the subtree is checked before
+   *  the copy starts: a descendant that the copier does not accept
+   *  makes the copy fail at that point.</p>
+   *
+   *  <p>If the destination namespace provides no copier, each
+   *  entity is instead re-created with
    *  {@link ModifiableEntity#addChild(String, String,
    *  com.optimasc.attribute.Attributes) addChild}, from the object
    *  class and the complete attribute set of its source. This
    *  generic copy carries over only what the entity-attribute
-   *  model exposes and may therefore be incomplete; it may also
-   *  be refused by a backend that does not accept some of the
-   *  source attributes at creation time.</p>
+   *  model exposes, not the content of a file, and may therefore
+   *  be incomplete; it may also be refused by a backend that does
+   *  not accept some of the source attributes at creation
+   *  time.</p>
    *
    *  <p>If {@code listener} is not {@code null}, it is invoked
    *  once before each entity is copied. The source entity of the
@@ -95,10 +103,11 @@ public final class EntityUtilities
    *  already created under {@code destinationParent} remain.</p>
    *
    * @param source             [in] The entity at the root of the
-   *   subtree to copy. Must not be {@code null}.
+   *   subtree to copy. Must not be {@code null}. May belong to
+   *   another namespace than {@code destinationParent}.
    * @param destinationParent  [in] The parent under which the
-   *   copy is bound. Must not be {@code null}. Must belong to the
-   *   same namespace as {@code source}, and must be neither
+   *   copy is bound. Must not be {@code null}. When it belongs to
+   *   the same namespace as {@code source}, it must be neither
    *   {@code source} itself nor one of its descendants.
    * @param newLastComponent   [in] The last name component the
    *   copy of {@code source} will have. Must not be {@code null}
@@ -113,15 +122,15 @@ public final class EntityUtilities
    *   {@code null}, or if {@code newLastComponent} is empty.
    * @throws EntityException with error code:
    *   <ul>
-   *     <li>{@link EntityException#INCOMPATIBLE_CONTAINER} if
-   *         {@code destinationParent} belongs to a different
-   *         namespace from {@code source}, or is {@code source}
-   *         itself or one of its descendants. Nothing has been
-   *         copied.</li>
+   *     <li>{@link EntityException#INCOMPATIBLE_CONTAINER} if the
+   *         copier of the destination namespace does not accept
+   *         {@code source}, or if {@code destinationParent} is
+   *         {@code source} itself or one of its descendants.
+   *         Nothing has been copied.</li>
    *     <li>{@link EntityException#NOT_IMPLEMENTED} if the
-   *         namespace provides no {@link EntityCopier} and an
-   *         entity has to be created under a parent that is not a
-   *         {@link ModifiableEntity}.</li>
+   *         destination namespace provides no {@link EntityCopier}
+   *         and an entity has to be created under a parent that is
+   *         not a {@link ModifiableEntity}.</li>
    *     <li>{@link EntityException#OPERATION_CANCELLED} if
    *         {@code listener} requested cancellation. The entities
    *         copied up to that point remain.</li>
@@ -133,6 +142,7 @@ public final class EntityUtilities
    *         copied up to that point remain.</li>
    *   </ul>
    * @see EntityCopier#copy(Entity, Entity, String)
+   * @see EntityCopier#canCopy(Entity, Entity)
    */
   public static Entity copyTree(Entity source,
       Entity destinationParent, String newLastComponent,
@@ -149,31 +159,39 @@ public final class EntityUtilities
       throw new IllegalArgumentException(
           "'newLastComponent' must not be null or empty.");
 
-    Namespace namespace = source.getNamespace();
-    if (!namespace.equals(destinationParent.getNamespace()))
-      throw new EntityException(
-          EntityException.INCOMPATIBLE_CONTAINER,
-          "Source and destination belong to different namespaces.");
+    Namespace destinationNamespace = destinationParent.getNamespace();
 
     // A destination inside the source subtree would make the walk
-    // copy its own output, without end.
-    EntityName sourceName = source.getNameInNamespace();
-    if (destinationParent.getNameInNamespace().startsWith(sourceName))
-      throw new EntityException(
-          EntityException.INCOMPATIBLE_CONTAINER,
-          "The destination is the source itself or one of its "
-          + "descendants.");
+    // copy its own output, without end. Names can only be compared
+    // within one namespace.
+    if (destinationNamespace.equals(source.getNamespace()))
+    {
+      EntityName sourceName = source.getNameInNamespace();
+      if (destinationParent.getNameInNamespace().startsWith(sourceName))
+        throw new EntityException(
+            EntityException.INCOMPATIBLE_CONTAINER,
+            "The destination is the source itself or one of its "
+            + "descendants.");
+    }
 
     EntityCopier copier =
-        namespace.getCapability(EntityCopier.class);
+        destinationNamespace.getCapability(EntityCopier.class);
+    if ((copier != null)
+        && (copier.canCopy(source, destinationParent) == false))
+      throw new EntityException(
+          EntityException.INCOMPATIBLE_CONTAINER,
+          "The copier of the destination namespace does not accept "
+          + "this source.");
+
     return copyNode(copier, source, destinationParent,
         newLastComponent, new Progress(listener));
   }
 
   /** Copies one entity, then recurses into its children.
    *
-   * @param copier            The namespace copier, or
-   *   {@code null} to use the generic attribute-based copy.
+   * @param copier            The copier of the destination
+   *   namespace, or {@code null} to use the generic attribute-based
+   *   copy.
    * @param source            The entity to copy.
    * @param destinationParent The parent of the copy.
    * @param name              The last name component of the copy.
@@ -198,7 +216,8 @@ public final class EntityUtilities
             "The namespace provides no EntityCopier and the "
             + "destination parent is not modifiable.");
       copy = ((ModifiableEntity) destinationParent).addChild(
-          source.getObjectClass(), name, source.getAttributes(null));
+          source.getObjectClass(), name,
+          source.getAttributes(new String[] { Entity.ALL_ATTRIBUTES }));
     }
     progress.completed();
 
@@ -215,7 +234,6 @@ public final class EntityUtilities
     }
     return copy;
   }
-
   // -----------------------------------------------------------------------
   // Remove
   // -----------------------------------------------------------------------
@@ -463,6 +481,24 @@ public final class EntityUtilities
       path[i] = nodes.get(last - i);
     }
     return path;
+  }
+  
+  /** Returns whether a list of attribute identifiers requests every
+   *  attribute.
+   *
+   * @param attrIds [in] The identifiers passed to
+   *   {@link #getAttributes(String[])}. Must not be {@code null}.
+   * @return {@code true} if {@code attrIds} contains
+   *   {@link com.optimasc.entity.Entity#ALL_ATTRIBUTES}.
+   */  
+  public static boolean requestsAllAttributes(String[] attrIds)
+  {
+    for (int i = 0; i < attrIds.length; i++)
+    {
+      if (com.optimasc.entity.Entity.ALL_ATTRIBUTES.equals(attrIds[i]))
+        return true;
+    }
+    return false;    
   }
 
   // -----------------------------------------------------------------------

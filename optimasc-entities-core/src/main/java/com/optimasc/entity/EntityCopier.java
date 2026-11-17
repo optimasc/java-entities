@@ -57,20 +57,17 @@ package com.optimasc.entity;
  *  the utility report progress and be cancelled between two
  *  entities; a copier takes no part in either.</p>
  *
- *  <h2>Intra-namespace only</h2>
+ *  <h2>Sources from other namespaces</h2>
  *
- *  <p>An {@code EntityCopier} obtained from a namespace handles
- *  copies <em>within</em> that namespace: both source and
- *  destination must belong to the same namespace. Cross-namespace
- *  copy &mdash; for example, copying a chunk from
- *  {@code riff:///song.wav} into a directory at
- *  {@code file:///tmp/} &mdash; is a different operation entirely
- *  (read from one, format-translate, write to the other) and
- *  must be performed at a higher application layer. Copier
- *  implementations are required to reject cross-namespace
- *  destinations with
- *  {@link EntityException#INCOMPATIBLE_CONTAINER}.</p>
- *
+ *  <p>The destination parent must belong to the namespace that
+ *  provided this copier. The source may belong to another namespace
+ *  when the copier accepts it: which sources a copier accepts is
+ *  defined by each implementation and is not guaranteed. A copier
+ *  typically accepts a source of another namespace only when it can
+ *  read from it everything the copy needs, for example the content of
+ *  a file through {@link ContentEntity}. Use
+ *  {@link #canCopy(Entity, Entity)} to find out beforehand.</p>
+ *   *
  *  <h2>Atomicity</h2>
  *
  *  <p>An implementation should perform the copy atomically with
@@ -157,4 +154,24 @@ public interface EntityCopier
   Entity copy(Entity source, Entity destinationParent,
       String newLastComponent)
       throws EntityException;
+  
+  
+  
+  /** Returns whether this copier can copy {@code source} into
+   *  {@code destinationParent}.
+   *
+   *  <p>This is a test without I/O, intended for user interfaces
+   *  that enable or disable paste and drop. A {@code true} result does
+   *  not guarantee that {@link #copy} will succeed: the copy may still
+   *  fail, for example because of access rights or a duplicate name.</p>
+   *
+   * @param source            [in] The entity to copy. Must not be
+   *   {@code null}.
+   * @param destinationParent [in] The intended parent of the copy. Must
+   *   not be {@code null}.
+   * @return {@code false} if {@code destinationParent} does not belong
+   *   to this copier's namespace, or if this copier does not accept
+   *   {@code source}; {@code true} otherwise.
+   */
+  boolean canCopy(Entity source, Entity destinationParent);  
 }

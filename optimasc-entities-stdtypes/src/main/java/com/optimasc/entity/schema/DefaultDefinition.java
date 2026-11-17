@@ -10,6 +10,7 @@ import com.optimasc.attribute.DefaultAttributes;
 import com.optimasc.entity.Entity;
 import com.optimasc.entity.EntityException;
 import com.optimasc.entity.EntityName;
+import com.optimasc.entity.EntityUtilities;
 import com.optimasc.entity.Namespace;
 import com.optimasc.entity.Syntax;
 import com.optimasc.schema.Definition;
@@ -583,7 +584,7 @@ public abstract class DefaultDefinition implements EntityDefinition
       throws EntityException
   {
     DefaultAttributes result = new DefaultAttributes(false);
-    if (attrIds == null)
+    if ((attrIds == null) || EntityUtilities.requestsAllAttributes(attrIds))    
     {
       java.util.Iterator<com.optimasc.attribute.Attribute> it =
           attributes.iterator();
@@ -600,6 +601,8 @@ public abstract class DefaultDefinition implements EntityDefinition
     }
     return result;
   }
+  
+      
 
   /** Returns a copy of an attribute, with the same identity, values, context
    *  keys and default context key, so that modifying the copy does not modify

@@ -74,6 +74,14 @@ public interface Entity
    *  implement {@link ContainerEntity}; the two are complementary.</p>
    */
   String OBJECT_CLASS_CONTAINER = "container";
+  
+  /** Attribute identifier that, inside the array passed to
+   *  {@link #getAttributes(String[])}, requests every attribute of the
+   *  entity, including those it returns only on request.
+   *
+   *  <p>Value: {@code "*"}.</p>
+   */
+  String ALL_ATTRIBUTES = "*";  
 
   /** Returns the name of the object class to which this entity
    *  belongs. This value identifies the entity's type within the schema
@@ -181,9 +189,20 @@ public interface Entity
    *
    *  <p>If this is a link entity, this method returns the attributes of
    *  the link itself, not of the link target.</p>
+   *  
+   *  <p>An entity may hold attributes that it returns only on request,
+   *  because they are costly to compute or are supplied by an external
+   *  source. Such attributes are left out when {@code attrIds} is
+   *  {@code null}, and are returned when they are named in
+   *  {@code attrIds} or when {@code attrIds} contains
+   *  {@link #ALL_ATTRIBUTES}. Which attributes are returned only on
+   *  request is defined by each implementation.</p>
    *
    *  @param attrIds [in] The expanded names or OIDs of the attributes to
-   *    retrieve, or {@code null} to retrieve all attributes.
+   *    retrieve; {@code null} to retrieve all attributes except those
+   *    returned only on request; or an array containing
+   *    {@link #ALL_ATTRIBUTES}, possibly with other names, to retrieve
+   *    every attribute.
    *  @return A non-null snapshot of this entity's attributes. If the
    *    entity has no attributes (or none matching {@code attrIds}), an
    *    empty set is returned.
