@@ -75,10 +75,26 @@ import com.optimasc.schema.ItemDefinition;
  * </p>
  *
  * <p>
- * {@link #getScheme()} returns {@link Schema#SCHEME}. {@link #getNameParser()},
- * {@link #resolve(String)}, and {@link #resolve(EntityName)} are not yet
- * implemented and throw {@link UnsupportedOperationException}; they will be
- * wired up in a future pass.
+ * {@link #getScheme()} returns {@link Schema#SCHEME}.
+ * </p>
+ *
+ * <h2>Names in the tree</h2>
+ * <p>
+ * {@link #resolve(EntityName)} walks the tree from the root. The first
+ * component names a container ({@link Schema#CONTAINER_ATTRIBUTE_DEFINITIONS},
+ * {@link Schema#CONTAINER_TYPE_DEFINITIONS} or
+ * {@link Schema#CONTAINER_CLASS_DEFINITIONS}); the remaining components are
+ * the {@link Entity#getNameInNamespace() own name} of a definition: its local
+ * name, preceded by its namespace URI when it has one. The own name of a
+ * definition does not include its container, so a name made of the own name
+ * alone resolves to nothing. Names are case-sensitive. A name that matches
+ * nothing, including one whose definition is in another container, resolves to
+ * {@code null}.
+ * </p>
+ * <p>
+ * {@link #getNameParser()} uses {@code '/'} as separator and {@code '\\'} as
+ * escape, so that a namespace URI, which contains slashes, stays one
+ * component: {@code AttributeDefinitions/http:\/\/purl.org\/dc\/title}.
  * </p>
  *
  * <h2>Concurrency</h2>
@@ -98,6 +114,14 @@ import com.optimasc.schema.ItemDefinition;
  */
 public class BasicSchema implements Schema
 {
+  /** Parser of the names of the schema tree. */
+  private static final EntityNameParser NAME_PARSER =
+      new com.optimasc.entity.parser.DefaultEntityNameParser(
+          com.optimasc.entity.parser.EntityNameSyntax.builder()
+              .direction(com.optimasc.entity.parser.EntityNameSyntax
+                  .Direction.LEFT_TO_RIGHT)
+              .separator('/').escape('\\').build());
+
   // -----------------------------------------------------------------------
   // Internal storage
   // -----------------------------------------------------------------------
@@ -426,40 +450,65 @@ public class BasicSchema implements Schema
   // -----------------------------------------------------------------------
 
   /**
-   * Not yet implemented.
+   * Returns the parser of the names of the schema tree: components separated
+   * by {@code '/'}, escaped with {@code '\\'}, case-sensitive.
    *
-   * @throws UnsupportedOperationException
-   *           always.
+   * @return The non-null parser, shared and stateless.
    */
   public EntityNameParser getNameParser()
   {
-    throw new UnsupportedOperationException(
-        "BasicSchema.getNameParser() is not yet implemented.");
+    return NAME_PARSER;
   }
 
   /**
-   * Not yet implemented.
+   * Resolves an external name; see {@link #resolve(EntityName)}.
    *
-   * @throws UnsupportedOperationException
-   *           always.
+   * @return The entity, or {@code null} if there is none.
+   * @throws java.text.ParseException
+   *           if the name is not valid for {@link #getNameParser()}.
    */
   public Entity resolve(String nameInNamespace)
       throws java.text.ParseException, EntityException
   {
-    throw new UnsupportedOperationException(
-        "BasicSchema.resolve(String) is not yet implemented.");
+    if (nameInNamespace == null)
+      throw new IllegalArgumentException(
+          "'nameInNamespace' must not be null.");
+    return resolve(NAME_PARSER.parse(nameInNamespace));
   }
 
   /**
-   * Not yet implemented.
+   * Resolves a structured name by walking the tree from the root.
    *
-   * @throws UnsupportedOperationException
-   *           always.
+   * @return The root for the empty name, a container for a name of one
+   *         component, a definition for the other names that match one, or
+   *         {@code null} if there is none.
    */
   public Entity resolve(EntityName name) throws EntityException
   {
-    throw new UnsupportedOperationException(
-        "BasicSchema.resolve(EntityName) is not yet implemented.");
+    if (name == null)
+      throw new IllegalArgumentException("'name' must not be null.");
+    if (name.isEmpty())
+      return root;
+    DefinitionContainerEntity container = null;
+    if (attributeContainer.getDisplayName().equals(name.get(0)))
+      container = attributeContainer;
+    else if (typeContainer.getDisplayName().equals(name.get(0)))
+      container = typeContainer;
+    else if (classContainer.getDisplayName().equals(name.get(0)))
+      container = classContainer;
+    if (container == null)
+      return null;
+    if (name.size() == 1)
+      return container;
+    EntityName own = name.getSuffix(1);
+    List<? extends Entity> children = container.getChildren();
+    for (int i = 0; i < children.size(); i++)
+    {
+      Entity child = children.get(i);
+      if (own.equals(child.getNameInNamespace()))
+        return child;
+    }
+    return null;
   }
 
   // -----------------------------------------------------------------------
