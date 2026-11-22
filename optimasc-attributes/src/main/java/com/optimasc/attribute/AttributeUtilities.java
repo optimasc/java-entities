@@ -462,4 +462,76 @@ public static DefaultAttributes remapAttributes(
   }
 
   return destination;
-}}
+}
+  /** Returns whether two attributes hold the same values, whatever their
+   *  implementation.
+   *
+   *  <p>Only the values, and the context key of each value, are compared:
+   *  the names, the OIDs, the type names and the value classes of the
+   *  attributes are not, so that attributes obtained from different sources
+   *  can be compared by what they hold. A value is the same when it is equal
+   *  ({@link Object#equals}, null-safe) and has the same context key
+   *  (null-safe).</p>
+   *
+   *  <p>The position of a value is significant only when
+   *  {@link Attribute#isOrdered()} returns {@code true}. If either attribute is
+   *  ordered, the values are compared position by position; this is the
+   *  stricter choice, so that a change of order of an ordered attribute is
+   *  never missed. Otherwise the values are compared as a multiset: in any
+   *  order, but each value as many times in one attribute as in the other, so
+   *  that {@code [a, a, b]} is not the same as {@code [a, b, b]}.</p>
+   *
+   * @param a [in] The first attribute, or {@code null}.
+   * @param b [in] The second attribute, or {@code null}.
+   * @return {@code true} if both are {@code null} or hold the same values;
+   *   {@code false} if only one is {@code null}, or the values differ.
+   */
+  public static boolean sameAttributeValues(Attribute a, Attribute b)
+  {
+    if (a == b)
+      return true;
+    if (a == null || b == null)
+      return false;
+    int size = a.size();
+    if (size != b.size())
+      return false;
+    if (a.isOrdered() || b.isOrdered())
+    {
+      for (int i = 0; i < size; i++)
+      {
+        if (!sameValue(a, i, b, i))
+          return false;
+      }
+      return true;
+    }
+    // Unordered: every value of a is matched with one distinct value of b.
+    boolean[] used = new boolean[size];
+    for (int i = 0; i < size; i++)
+    {
+      boolean found = false;
+      for (int j = 0; j < size && !found; j++)
+      {
+        if (!used[j] && sameValue(a, i, b, j))
+        {
+          used[j] = true;
+          found = true;
+        }
+      }
+      if (!found)
+        return false;
+    }
+    return true;
+  }
+
+  /** Returns whether two values, with their context keys, are the same. */
+  private static boolean sameValue(Attribute a, int i, Attribute b, int j)
+  {
+    Object x = a.get(i);
+    Object y = b.get(j);
+    if (x == null ? y != null : !x.equals(y))
+      return false;
+    String kx = a.getContextKey(i);
+    String ky = b.getContextKey(j);
+    return kx == null ? ky == null : kx.equals(ky);
+  }
+}

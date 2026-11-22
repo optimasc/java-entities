@@ -612,11 +612,22 @@ public class DefaultAttribute implements Attribute
   }
   
   
-  /** Two {@code Attribute} instances are equal if and only if
-   *  they have the same expanded name, the same value class, and the same
-   *  ordered sequence of values (compared using {@link Object#equals},
-   *  null-safe). OID, type name, ordering flag, context type, and default
-   *  context value are not considered for equality.
+  /** Two {@code Attribute} instances are equal if and only if they have the
+   *  same expanded name, the same value class, the same
+   *  {@link #isOrdered() ordering}, and the same values.
+   *
+   *  <p>Values are compared with {@link Object#equals} (null-safe), together
+   *  with their context key. When the attributes are ordered, the values are
+   *  compared position by position; otherwise they are compared as a
+   *  multiset, in any order but each value as many times in both. The
+   *  ordering flag is part of the comparison so that this relation stays
+   *  transitive: an unordered attribute is never equal to an ordered one.
+   *  OID, type name, context type and default context are not
+   *  considered.</p>
+   *
+   *  <p>To compare the values of attributes of any implementation, ignoring
+   *  their names and types, use
+   *  {@link AttributeUtilities#sameAttributeValues(Attribute, Attribute)}.</p>
    */
   public boolean equals(Object obj)
   {
@@ -625,38 +636,35 @@ public class DefaultAttribute implements Attribute
       if (!(obj instanceof Attribute))
           return false;
       Attribute other = (Attribute) obj;
-      // Expanded name must match
       if (!getExpandedName().equals(other.getExpandedName()))
           return false;
-      // Value class must match
       if (!valueClass.equals(other.getValueClass()))
           return false;
-      // Value count must match
-      if (size() != other.size())
+      if (isOrdered() != other.isOrdered())
           return false;
-      // Each value must match in order
-      int size = size();
-      for (int i = 0; i < size; i++)
-      {
-          Object va = get(i);
-          Object vb = other.get(i);
-          if (va == null ? vb != null : !va.equals(vb))
-              return false;
-      }
-      return true;
+      return AttributeUtilities.sameAttributeValues(this, other);
   }
 
+  /** Returns a hash code consistent with {@link #equals(Object)}: it does
+   *  not depend on the order of the values of an unordered attribute. */
   public int hashCode()
   {
       int result = getExpandedName().hashCode();
       result = 31 * result + valueClass.hashCode();
       int size = size();
+      int values = 0;
       for (int i = 0; i < size; i++)
       {
           Object v = get(i);
-          result = 31 * result + (v != null ? v.hashCode() : 0);
+          String key = getContextKey(i);
+          int h = 31 * (v != null ? v.hashCode() : 0)
+              + (key != null ? key.hashCode() : 0);
+          if (isOrdered())
+              values = 31 * values + h;
+          else
+              values += h;
       }
-      return result;
+      return 31 * result + values;
   }
   
   /** {@inheritDoc}
